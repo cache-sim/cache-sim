@@ -15,7 +15,7 @@ class CacheLine {
         int blockSize;
 
     public:
-        CacheLine(bool valid, int tag, int blockSize);
+        CacheLine(int blockSize);
         
         bool getValid();
         int getTag();

@@ -1,6 +1,11 @@
 #pragma once
 
+#include <cstdio>
+
 #define ADDRESS_BITS 64        //assuming 64 bits in address
+
+//error handling
+void printError(char *errorMessage);
 
 class CacheLine {
     

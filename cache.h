@@ -1,20 +1,20 @@
 #pragma once
 
+#define ADDRESS_BITS 64        //assuming 64 bits in address
+
 class CacheLine {
     
     private:
-        bool vaild, dirty;
+        bool vaild;
         int tag;
         int blockSize;
 
     public:
-        CacheLine(bool valid, bool dirty, int tag, int blockSize);
+        CacheLine(bool valid, int tag, int blockSize);
         
         bool getValid();
-        bool getDirty();
         int getTag();
         void setValid(bool valid);
-        void setDirty(bool dirty);
         void setTag(int tag); 
 };
 

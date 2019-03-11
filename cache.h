@@ -34,7 +34,7 @@ class Cache {
         CacheLine *cacheLines;
 
     public:
-        Cache(int numberOfRows, int setAssociativity = 1);
+        Cache(int numberOfRows, int blockSize, int setAssociativity = 1);
 
         void incHits();
         void incMisses();

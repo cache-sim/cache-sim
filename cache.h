@@ -5,7 +5,7 @@
 class CacheLine {
     
     private:
-        bool valid;
+        bool valid; // true when block is present in cache, false when no block is present
         int tag;
         int blockSize;
 
@@ -21,7 +21,7 @@ class CacheLine {
 class Cache {
     
     private:
-        int cacheSize;
+        int numberOfRows; //Number of rows in cache
         int setAssociativity; //1 for direct mapped
         int numberOfSets;
         int indexSize, offsetSize;
@@ -29,7 +29,7 @@ class Cache {
         CacheLine *cacheLines;
 
     public:
-        Cache(int cacheSize, int setAssociativity = 1);
+        Cache(int numberOfRows, int setAssociativity = 1);
 
         void incHits();
         void incMisses();

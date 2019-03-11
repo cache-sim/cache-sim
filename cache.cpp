@@ -2,11 +2,16 @@
 
 #include "cache.h"
 
+//implementation of error handling
+void printError(char *errorMessage) {
+    printf("ERROR: %s\n", errorMessage);
+}
+
 //implementation of CacheLine class
 
-CacheLine::CacheLine(bool valid, int tag, int blockSize) {
-    this->valid = valid;
-    this->tag = tag;
+CacheLine::CacheLine(int blockSize) {
+    this->valid = false;
+    this->tag = 0;
     this->blockSize = blockSize;
 }
 
@@ -24,4 +29,19 @@ void CacheLine::setValid(bool valid) {
 
 void CacheLine::setTag(int tag) {
     this->tag = tag;
+}
+
+
+//implementation of Cache class
+
+Cache::Cache(int numberOfRows, int blockSize, int setAssociativity = 1) : cacheLines(numberOfRows, blockSize) {
+    this->numberOfRows = numberOfRows;
+    this->setAssociativity = setAssociativity;
+    if(numberOfRows%setAssociativity == 0) {
+        numberOfSets = numberOfRows/setAssociativity;
+        // continue from here
+    }
+    else {
+        printError("Set associativity is not divisible by number of row.");
+    }
 }

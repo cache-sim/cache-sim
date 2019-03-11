@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdio>
+#include <vector>
 
 #define ADDRESS_BITS 64        //assuming 64 bits in address
 
@@ -31,7 +32,7 @@ class Cache {
         int numberOfSets;
         int indexSize, offsetSize;
         int hits, misses;
-        CacheLine *cacheLines;
+        std::vector<CacheLine> cacheLines;
 
     public:
         Cache(int numberOfRows, int blockSize, int setAssociativity = 1);

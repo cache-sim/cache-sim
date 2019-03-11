@@ -5,7 +5,7 @@
 class CacheLine {
     
     private:
-        bool vaild;
+        bool valid;
         int tag;
         int blockSize;
 

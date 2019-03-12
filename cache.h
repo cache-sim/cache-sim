@@ -12,16 +12,16 @@ class CacheLine {
     
     private:
         bool valid; // true when block is present in cache, false when no block is present
-        int tag;
+        long long tag;
         int blockSize;
 
     public:
         CacheLine(int blockSize);
         
         bool getValid();
-        int getTag();
+        long long getTag();
         void setValid(bool valid);
-        void setTag(int tag); 
+        void setTag(long long tag); 
 };
 
 class Cache {

@@ -117,7 +117,7 @@ Cache::Cache(int numberOfRows, int blockSize, int setAssociativity = 1)
         error = true;
     }
     if(numberOfRows%setAssociativity != 0) {
-        printError("Set associativity is not divisible by number of rows.");
+        printError("Number of rows is not divisble by Set Associativity.");
         error = true;
     }
     if(error == true) {

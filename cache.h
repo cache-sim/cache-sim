@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdio>
+#include <cstring>
 #include <vector>
 
 #define ADDRESS_BITS 64        //assuming 64 bits in address
@@ -12,6 +13,10 @@ void printError(char *errorMessage);
 
 bool isPowerOfTwo(long long x);
 int log(long long x);
+long long hexadecimalToDecimal(char hexVal[]);
+
+//I/O
+std::vector<long long> readTrace(FILE *trace);
 
 //cache classes
 

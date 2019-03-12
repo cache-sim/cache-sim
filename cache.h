@@ -8,6 +8,9 @@
 //error handling
 void printError(char *errorMessage);
 
+//helper functions
+bool isPowerOfTwo(long long number);
+
 class CacheLine {
     
     private:

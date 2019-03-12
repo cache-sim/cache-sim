@@ -19,7 +19,7 @@ bool CacheLine::getValid() {
     return valid;
 }
 
-int CacheLine::getTag() {
+long long CacheLine::getTag() {
     return tag;
 }
 
@@ -27,7 +27,7 @@ void CacheLine::setValid(bool valid) {
     this->valid = valid;
 }
 
-void CacheLine::setTag(int tag) {
+void CacheLine::setTag(long long tag) {
     this->tag = tag;
 }
 

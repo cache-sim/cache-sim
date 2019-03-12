@@ -77,4 +77,8 @@ Cache::Cache(int numberOfRows, int blockSize, int setAssociativity = 1)
     if(error == true) {
         return;
     }
+
+    numberOfSets = numberOfRows/setAssociativity;
+    offsetSize = log(blockSize);
+    indexSize = log(numberOfSets);
 }

@@ -17,7 +17,7 @@ bool isPowerOfTwo(long long x) {
 //x is non_zero
 int log(long long x) {
     int power = 0;
-    while(x > 0) {
+    while(x > 1) {
         x = x>>1;
         power++;
     }

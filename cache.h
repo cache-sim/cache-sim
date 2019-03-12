@@ -40,6 +40,7 @@ class Cache {
         int indexSize, offsetSize;
         int hits, misses;
         std::vector<CacheLine> cacheLines;
+        long long getTagFromAddress(long long address);
 
     public:
         Cache(int numberOfRows, int blockSize, int setAssociativity = 1);

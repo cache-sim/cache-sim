@@ -9,7 +9,7 @@
 void printError(char *errorMessage);
 
 //helper functions
-bool isPowerOfTwo(long long number);
+bool isPowerOfTwo(long long x);
 
 class CacheLine {
     

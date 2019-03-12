@@ -7,6 +7,12 @@ void printError(char *errorMessage) {
     printf("ERROR: %s\n", errorMessage);
 }
 
+//implementation of helper functions
+bool isPowerOfTwo(long long x) {
+    // First x in the below expression is for the case when x is 0 */
+    return x && (!(x&(x-1))); 
+}
+
 //implementation of CacheLine class
 
 CacheLine::CacheLine(int blockSize) {
@@ -34,14 +40,30 @@ void CacheLine::setTag(long long tag) {
 
 //implementation of Cache class
 
-Cache::Cache(int numberOfRows, int blockSize, int setAssociativity = 1) : cacheLines(numberOfRows, blockSize) {
+Cache::Cache(int numberOfRows, int blockSize, int setAssociativity = 1) 
+: cacheLines(numberOfRows, CacheLine(blockSize)) {
     this->numberOfRows = numberOfRows;
     this->setAssociativity = setAssociativity;
-    if(numberOfRows%setAssociativity == 0) {
-        numberOfSets = numberOfRows/setAssociativity;
-        // continue from here
+    
+    //error handling
+    bool error = false;
+    if(!isPowerOfTwo(numberOfRows)) {
+        printError("Number of rows is not power of 2. (first parameter in Cache constructor)");
+        error = true;
     }
-    else {
-        printError("Set associativity is not divisible by number of row.");
+    if(!isPowerOfTwo(blockSize)) {
+        printError("Block size is not power of 2. (second parameter in Cache constructor)");
+        error = true;
+    }
+    if(!isPowerOfTwo(setAssociativity)) {
+        printError("Set Associativity rows is not power of 2. (third parameter in Cache constructor)");
+        error = true;
+    }
+    if(numberOfRows%setAssociativity != 0) {
+        printError("Set associativity is not divisible by number of rows.");
+        error = true;
+    }
+    if(error == true) {
+        return;
     }
 }

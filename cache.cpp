@@ -8,9 +8,20 @@ void printError(char *errorMessage) {
 }
 
 //implementation of helper functions
+
 bool isPowerOfTwo(long long x) {
     // First x in the below expression is for the case when x is 0 */
     return x && (!(x&(x-1))); 
+}
+
+//x is non_zero
+int log(long long x) {
+    int power = 0;
+    while(x > 0) {
+        x = x>>1;
+        power++;
+    }
+    return power;
 }
 
 //implementation of CacheLine class

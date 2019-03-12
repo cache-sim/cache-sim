@@ -82,3 +82,7 @@ Cache::Cache(int numberOfRows, int blockSize, int setAssociativity = 1)
     offsetSize = log(blockSize);
     indexSize = log(numberOfSets);
 }
+
+long long Cache::getTagFromAddress(long long address) {
+    return address>>(offsetSize+indexSize);
+}

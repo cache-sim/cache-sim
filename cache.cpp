@@ -96,7 +96,7 @@ CacheLine::CacheLine(int blockSize) {
     this->blockSize = blockSize;
 }
 
-bool CacheLine::getValid() {
+bool CacheLine::isValid() {
     return valid;
 }
 
@@ -153,6 +153,22 @@ void Cache::incHits() {
 
 void Cache::incMisses() {
     misses++;
+}
+
+bool Cache::isDataInCache(long long address) {
+    int index = this->getIndexFromAddress(address);
+    int tag = this->getTagFromAddress;
+
+    for(int i = index*setAssociativity; i < (index+1)*setAssociativity; i++) {
+        if(cacheLines[i].isValid() == false) {
+            break;
+        }
+        else if(cacheLines[i].getTag() == tag){
+            return true;
+        }
+    }
+
+    return false;
 }
 
 double Cache::hitRate() {

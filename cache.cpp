@@ -147,10 +147,6 @@ Cache::Cache(int numberOfRows, int blockSize, int setAssociativity = 1)
     indexSize = log(numberOfSets);
 }
 
-long long Cache::getTagFromAddress(long long address) {
-    return address>>(offsetSize+indexSize);
-}
-
 void Cache::incHits() {
     hits++;
 }
@@ -173,4 +169,12 @@ long long Cache::getNumberOfHits() {
 
 long long Cache::getNumberOfMisses() {
     return misses;
+}
+
+long long Cache::getTagFromAddress(long long address) {
+    return address>>(offsetSize+indexSize);
+}
+
+long long Cache::getIndexFromAddress(long long address) {
+    return ((1<<indexSize - 1) & (address >> offsetSize));
 }

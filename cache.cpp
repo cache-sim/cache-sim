@@ -82,6 +82,7 @@ std::vector<long long> readTrace(FILE *trace) {
     while(instruction != "#eof") {
         fscanf(trace, "%*c %s", address);
         addresses.push_back(hexadecimalToDecimal(address));
+        fscanf(trace, "%s", instruction);
     }
 
     return addresses;

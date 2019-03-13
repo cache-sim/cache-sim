@@ -14,7 +14,9 @@ int log(long long x);
 long long hexadecimalToDecimal(char hexVal[]);
 
 //I/O
-std::vector<long long> readTrace(FILE *trace);
+
+std::vector<long long> readTrace(char filePath[]); // takes in file path as parameter (use this)
+std::vector<long long> readTrace(FILE *trace); // takes in file pointer as parameter 
 
 //cache classes
 

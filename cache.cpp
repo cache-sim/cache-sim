@@ -64,10 +64,21 @@ long long hexadecimalToDecimal(char hexVal[]) {
 //implementaion of I/O
 
 std::vector<long long> readTrace(FILE *trace) {
-    std::vector<long long> addresses;
+    /******************************************************
+    * sample input line -> 0x7f110d39287e: R 0x7ffced08e7f8
+    * end of line -> #eof 
+    *******************************************************/
 
-    //start from here
+    std::vector<long long> addresses; // stores addresses of all data accesses
+    char instruction[20], address[20];  
+    fscanf(trace, "%s", instruction);
 
+    while(instruction != "#eof") {
+        fscanf(trace, "%*c %s", address);
+        addresses.push_back(hexadecimalToDecimal(address));
+    }
+
+    return addresses;
 }
 
 //implementation of CacheLine class

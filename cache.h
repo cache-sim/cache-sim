@@ -30,7 +30,7 @@ class CacheLine {
     public:
         CacheLine(int blockSize);
         
-        bool getValid();
+        bool isValid();
         long long getTag();
         void setValid(bool valid);
         void setTag(long long tag); 
@@ -51,8 +51,8 @@ class Cache {
 
         void incHits(); //Must be called when there is a cache hit
         void incMisses(); //Must be called when there is a cache miss
-        bool isDataInCache(long long dataAddress);
-        void insertDataToCache(long long dataAddress); //will insert data only if free cacheLines are available
+        bool isDataInCache(long long address);
+        void insertDataToCache(long long address); //will insert data only if free cacheLines are available
         void evictBlock(int setIndex, int posInSet = 0); //not sure if it will be useful?
         void displayCache(); //for debugging
         double hitRate();

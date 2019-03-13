@@ -150,3 +150,27 @@ Cache::Cache(int numberOfRows, int blockSize, int setAssociativity = 1)
 long long Cache::getTagFromAddress(long long address) {
     return address>>(offsetSize+indexSize);
 }
+
+void Cache::incHits() {
+    hits++;
+}
+
+void Cache::incMisses() {
+    misses++;
+}
+
+double Cache::hitRate() {
+    return (double)(hits)/(hits + misses);
+}
+
+double Cache::missRate() {
+    return (double)(misses)/(misses + misses);
+}
+
+long long Cache::getNumberOfHits() {
+    return hits;
+}
+
+long long Cache::getNumberOfMisses() {
+    return misses;
+}

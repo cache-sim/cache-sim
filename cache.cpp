@@ -63,6 +63,12 @@ long long hexadecimalToDecimal(char hexVal[]) {
 
 //implementaion of I/O
 
+std::vector<long long> readTrace(char filePath[]) {
+
+    FILE *trace = fopen(filePath, "r");
+    return readTrace(trace);
+}
+
 std::vector<long long> readTrace(FILE *trace) {
     /******************************************************
     * sample input line -> 0x7f110d39287e: R 0x7ffced08e7f8

@@ -240,3 +240,23 @@ long long Cache::getTagFromAddress(long long address) {
 long long Cache::getIndexFromAddress(long long address) {
     return ((1<<indexSize - 1) & (address >> offsetSize));
 }
+
+void Cache::displayCache() {
+    /****************************************
+     * Display of one set with two elements
+     * 2:              //index
+     * |1|2345|        //valid bit and tag
+     * |0|    |  
+     ***************************************/
+
+    int row = 0;
+    for(int set = 0; set < numberOfSets; set++) {
+        printf("%d:\n");
+        for(int posInSet = 0; posInSet < setAssociativity; posInSet++) {
+            printf("|%d|%40d|\n", cacheLines[row].isValid(), cacheLines[row].getTag());
+            row++;
+        }
+    }
+
+    printf("\n");
+}

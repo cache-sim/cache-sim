@@ -116,7 +116,7 @@ void CacheLine::setTag(long long tag) {
 //implementation of Cache class
 
 Cache::Cache(int numberOfRows, int blockSize, int setAssociativity = 1) 
-: cacheLines(numberOfRows, CacheLine(blockSize)) {
+: cacheLines(numberOfRows, CacheLine(blockSize)), nextFreeBlockInSet(numberOfRows/setAssociativity, 0)  {
     this->numberOfRows = numberOfRows;
     this->setAssociativity = setAssociativity;
     
@@ -156,19 +156,65 @@ void Cache::incMisses() {
 }
 
 bool Cache::isDataInCache(long long address) {
-    int index = this->getIndexFromAddress(address);
-    int tag = this->getTagFromAddress;
+    long long index = this->getIndexFromAddress(address);
+    long long tag = this->getTagFromAddress(address);
+    return this->isDataInCache(index, tag);
+}
 
-    for(int i = index*setAssociativity; i < (index+1)*setAssociativity; i++) {
-        if(cacheLines[i].isValid() == false) {
-            break;
-        }
-        else if(cacheLines[i].getTag() == tag){
+bool Cache::isDataInCache(long long index, long long tag) {
+    
+    for(int i = index*setAssociativity; i < index*setAssociativity + nextFreeBlockInSet[index]; i++) {
+        if(cacheLines[i].getTag() == tag){
             return true;
         }
     }
 
     return false;
+}
+
+bool Cache::isSetFull(long long index) {
+    return nextFreeBlockInSet[index] == setAssociativity;
+}
+
+void Cache::insertDataToCache(long long address) {
+    long long index = this->getIndexFromAddress(address);
+    long long tag = this->getTagFromAddress(address);
+    return this->insertDataToCache(index, tag);
+}
+
+void Cache::insertDataToCache(long long index, long long tag) {
+    int row = index * setAssociativity + nextFreeBlockInSet[index];
+    cacheLines[row].setTag(tag);
+    cacheLines[row].setValid(true);
+    nextFreeBlockInSet[index]++;
+}
+
+
+void Cache::evictAndInsertBlock(long long evictionAddress, long long insertionAddress) {
+    long long eIndex = this->getIndexFromAddress(evictionAddress);
+    long long eTag = this->getTagFromAddress(evictionAddress);
+    long long iIndex = this->getIndexFromAddress(insertionAddress);
+    long long iTag = this->getTagFromAddress(insertionAddress);
+    evictAndInsertBlock(eIndex, eTag, iIndex, iTag);
+}
+
+void Cache::evictAndInsertBlock(long long eIndex, long long eTag, long long iIndex, long long iTag) {
+    
+    if(eIndex != iIndex) {
+        printError("evictAndInsertBlock: Evicting and Incoming block don't belong to the same set!");
+        return;
+    }
+    else if(eTag == iTag) {
+        printError("evictAndInsertBlock: Evicting and Inserting block are the same!");
+        return;
+    }
+
+    long long index = iIndex;
+    for(int i = index*setAssociativity; i < index*setAssociativity + nextFreeBlockInSet[index]; i++) {
+        if(cacheLines[i].getTag() == eTag) {
+            cacheLines[i].setTag(iTag);
+        }
+    }
 }
 
 double Cache::hitRate() {

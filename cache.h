@@ -45,20 +45,29 @@ class Cache {
         int indexSize, offsetSize;
         long long hits, misses;
         std::vector<CacheLine> cacheLines;
+        std::vector<int> nextFreeBlockInSet;
+        //set is full if nextFreeBlockInSet == setAssociativity
 
     public:
         Cache(int numberOfRows, int blockSize, int setAssociativity = 1);
 
         void incHits(); //Must be called when there is a cache hit
         void incMisses(); //Must be called when there is a cache miss
+        
         bool isDataInCache(long long address);
-        void insertDataToCache(long long address); //will insert data only if free cacheLines are available
-        void evictBlock(int setIndex, int posInSet = 0); //not sure if it will be useful?
-        void displayCache(); //for debugging
+        bool isDataInCache(long long index, long long tag);
+        bool isSetFull(long long index);
+        void insertDataToCache(long long address); //will insert data only if free cacheLines are available and return true (else return false)
+        void insertDataToCache(long long index, long long tag);
+        void evictAndInsertBlock(long long evictionAddress, long long insertionAddress); //A block is evicted when some other block is inserted
+        void evictAndInsertBlock(long long eIndex, long long eTag, long long iIndex, long long iTag);
+        
         double hitRate();
         double missRate();
         long long getNumberOfHits(); //for debugging
         long long getNumberOfMisses(); //for debugging
         long long getTagFromAddress(long long address);
         long long getIndexFromAddress(long long address);
+
+        void displayCache(); //for debugging
 };

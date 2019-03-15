@@ -55,11 +55,11 @@ class Cache {
         void incMisses(); //Must be called when there is a cache miss
         
         bool isDataInCache(long long address);
-        bool isDataInCache(long long index, long long tag);
+        bool isBlockInCache(long long index, long long tag);
         bool isSetFull(long long index);
         void insertDataToCache(long long address); //will insert data only if free cacheLines are available and return true (else return false)
-        void insertDataToCache(long long index, long long tag);
-        void evictAndInsertBlock(long long evictionAddress, long long insertionAddress); //A block is evicted when some other block is inserted
+        void insertBlockToCache(long long index, long long tag);
+        void evictAndInsertData(long long evictionAddress, long long insertionAddress); //A block is evicted when some other block is inserted
         void evictAndInsertBlock(long long eIndex, long long eTag, long long iIndex, long long iTag);
         
         double hitRate();

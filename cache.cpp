@@ -158,10 +158,10 @@ void Cache::incMisses() {
 bool Cache::isDataInCache(long long address) {
     long long index = this->getIndexFromAddress(address);
     long long tag = this->getTagFromAddress(address);
-    return this->isDataInCache(index, tag);
+    return this->isBlockInCache(index, tag);
 }
 
-bool Cache::isDataInCache(long long index, long long tag) {
+bool Cache::isBlockInCache(long long index, long long tag) {
     
     for(int i = index*setAssociativity; i < index*setAssociativity + nextFreeBlockInSet[index]; i++) {
         if(cacheLines[i].getTag() == tag){
@@ -179,10 +179,10 @@ bool Cache::isSetFull(long long index) {
 void Cache::insertDataToCache(long long address) {
     long long index = this->getIndexFromAddress(address);
     long long tag = this->getTagFromAddress(address);
-    return this->insertDataToCache(index, tag);
+    return this->insertBlockToCache(index, tag);
 }
 
-void Cache::insertDataToCache(long long index, long long tag) {
+void Cache::insertBlockToCache(long long index, long long tag) {
     int row = index * setAssociativity + nextFreeBlockInSet[index];
     cacheLines[row].setTag(tag);
     cacheLines[row].setValid(true);
@@ -190,7 +190,7 @@ void Cache::insertDataToCache(long long index, long long tag) {
 }
 
 
-void Cache::evictAndInsertBlock(long long evictionAddress, long long insertionAddress) {
+void Cache::evictAndInsertData(long long evictionAddress, long long insertionAddress) {
     long long eIndex = this->getIndexFromAddress(evictionAddress);
     long long eTag = this->getTagFromAddress(evictionAddress);
     long long iIndex = this->getIndexFromAddress(insertionAddress);

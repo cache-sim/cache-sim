@@ -1,11 +1,12 @@
 #pragma once
 
-#include <cstdio>
 #include <cstring>
 #include <vector>
+#include <string>
+#include <iostream>
 
 //error handling
-void printError(char *errorMessage);
+void printError(std::string errorMessage);
 
 //helper functions
 
@@ -49,7 +50,7 @@ class Cache {
         //set is full if nextFreeBlockInSet == setAssociativity
 
     public:
-        Cache(int numberOfRows, int blockSize, int setAssociativity = 1);
+        Cache(int numberOfSets, int blockSize, int setAssociativity);
 
         void incHits(); //Must be called when there is a cache hit
         void incMisses(); //Must be called when there is a cache miss

@@ -3,8 +3,8 @@
 #include "cache.h"
 
 //implementation of error handling
-void printError(char *errorMessage) {
-    printf("ERROR: %s\n", errorMessage);
+void printError(std::string errorMessage) {
+    std::cout << "ERROR: " << errorMessage << std::endl;
 }
 
 //implementation of helper functions
@@ -76,14 +76,13 @@ std::vector<long long> readTrace(FILE *trace) {
     *******************************************************/
 
     std::vector<long long> addresses; // stores addresses of all data accesses
-    char instruction[20], address[20];  
-    fscanf(trace, "%s", instruction);
+    char instruction[20], access[5], address[20];
 
-    while(instruction != "#eof") {
-        fscanf(trace, "%*c %s", address);
+    while(!feof(trace)) {
+        fscanf(trace, "%*s %*s %s", address);
         addresses.push_back(hexadecimalToDecimal(address));
-        fscanf(trace, "%s", instruction);
     }
+    addresses.pop_back();  //last line is read twice
 
     return addresses;
 }
@@ -115,15 +114,15 @@ void CacheLine::setTag(long long tag) {
 
 //implementation of Cache class
 
-Cache::Cache(int numberOfRows, int blockSize, int setAssociativity = 1) 
-: cacheLines(numberOfRows, CacheLine(blockSize)), nextFreeBlockInSet(numberOfRows/setAssociativity, 0)  {
-    this->numberOfRows = numberOfRows;
+Cache::Cache(int numberOfSets, int blockSize, int setAssociativity) 
+: cacheLines(numberOfSets * setAssociativity, CacheLine(blockSize)), nextFreeBlockInSet(numberOfSets, 0)  {
+    this->numberOfSets = numberOfSets;
     this->setAssociativity = setAssociativity;
     
     //error handling
     bool error = false;
-    if(!isPowerOfTwo(numberOfRows)) {
-        printError("Number of rows is not power of 2. (first parameter in Cache constructor)");
+    if(!isPowerOfTwo(numberOfSets)) {
+        printError("Number of sets is not power of 2. (first parameter in Cache constructor)");
         error = true;
     }
     if(!isPowerOfTwo(blockSize)) {
@@ -131,20 +130,21 @@ Cache::Cache(int numberOfRows, int blockSize, int setAssociativity = 1)
         error = true;
     }
     if(!isPowerOfTwo(setAssociativity)) {
-        printError("Set Associativity rows is not power of 2. (third parameter in Cache constructor)");
+        printError("Set Associativity is not power of 2. (third parameter in Cache constructor)");
         error = true;
     }
-    if(numberOfRows%setAssociativity != 0) {
-        printError("Number of rows is not divisble by Set Associativity.");
+    if(setAssociativity == 0) {
+        printError("Set Associativity cannot be equal to 0. (third parameter in Cache constructor)");
         error = true;
     }
     if(error == true) {
         return;
     }
 
-    numberOfSets = numberOfRows/setAssociativity;
+    numberOfRows = numberOfSets * setAssociativity;
     offsetSize = log2(blockSize);
     indexSize = log2(numberOfSets);
+    hits = misses = 0;
 }
 
 void Cache::incHits() {
@@ -162,8 +162,14 @@ bool Cache::isDataInCache(long long address) {
 }
 
 bool Cache::isBlockInCache(long long index, long long tag) {
+
+    long long i = index*setAssociativity;
+
+    if(cacheLines[i].isValid() == false) { //first time
+        return false;
+    }
     
-    for(int i = index*setAssociativity; i < index*setAssociativity + nextFreeBlockInSet[index]; i++) {
+    for( ; i < index*setAssociativity + nextFreeBlockInSet[index]; i++) {
         if(cacheLines[i].getTag() == tag){
             return true;
         }
@@ -183,7 +189,7 @@ void Cache::insertDataToCache(long long address) {
 }
 
 void Cache::insertBlockToCache(long long index, long long tag) {
-    int row = index * setAssociativity + nextFreeBlockInSet[index];
+    long long row = index * setAssociativity + nextFreeBlockInSet[index];
     cacheLines[row].setTag(tag);
     cacheLines[row].setValid(true);
     nextFreeBlockInSet[index]++;
@@ -222,7 +228,7 @@ double Cache::hitRate() {
 }
 
 double Cache::missRate() {
-    return (double)(misses)/(misses + misses);
+    return (double)(misses)/(hits + misses);
 }
 
 long long Cache::getNumberOfHits() {
@@ -238,7 +244,7 @@ long long Cache::getTagFromAddress(long long address) {
 }
 
 long long Cache::getIndexFromAddress(long long address) {
-    return ((1<<indexSize - 1) & (address >> offsetSize));
+    return (((1<<indexSize) - 1) & (address >> offsetSize));
 }
 
 void Cache::displayCache() {
@@ -251,9 +257,9 @@ void Cache::displayCache() {
 
     int row = 0;
     for(int set = 0; set < numberOfSets; set++) {
-        printf("%d:\n");
+        printf("%d:\n", set);
         for(int posInSet = 0; posInSet < setAssociativity; posInSet++) {
-            printf("|%d|%40d|\n", cacheLines[row].isValid(), cacheLines[row].getTag());
+            printf("|%d|%20lld|\n", cacheLines[row].isValid(), cacheLines[row].getTag());
             row++;
         }
     }

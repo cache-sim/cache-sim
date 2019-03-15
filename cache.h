@@ -10,7 +10,7 @@ void printError(char *errorMessage);
 //helper functions
 
 bool isPowerOfTwo(long long x);
-int log(long long x);
+int log2(long long x);
 long long hexadecimalToDecimal(char hexVal[]);
 
 //I/O

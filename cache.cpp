@@ -15,7 +15,7 @@ bool isPowerOfTwo(long long x) {
 }
 
 //x is non_zero
-int log(long long x) {
+int log2(long long x) {
     int power = 0;
     while(x > 1) {
         x = x>>1;
@@ -143,8 +143,8 @@ Cache::Cache(int numberOfRows, int blockSize, int setAssociativity = 1)
     }
 
     numberOfSets = numberOfRows/setAssociativity;
-    offsetSize = log(blockSize);
-    indexSize = log(numberOfSets);
+    offsetSize = log2(blockSize);
+    indexSize = log2(numberOfSets);
 }
 
 void Cache::incHits() {

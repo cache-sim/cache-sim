@@ -89,6 +89,12 @@ std::vector<long long> readTrace(FILE *trace) {
 
 //implementation of CacheLine class
 
+CacheLine::CacheLine() {
+    this->valid = false;
+    this->tag = 0;
+    this->blockSize = 0;
+}
+
 CacheLine::CacheLine(int blockSize) {
     this->valid = false;
     this->tag = 0;
@@ -111,30 +117,33 @@ void CacheLine::setTag(long long tag) {
     this->tag = tag;
 }
 
+void CacheLine::setBlockSize(long long blockSize) {
+    this->blockSize = blockSize;
+}
+
 
 //implementation of Cache class
 
-Cache::Cache(int numberOfSets, int blockSize, int setAssociativity) 
-: cacheLines(numberOfSets * setAssociativity, CacheLine(blockSize)), nextFreeBlockInSet(numberOfSets, 0)  {
+Cache::Cache(int numberOfSets, int blockSize, int setAssociativity) {
     this->numberOfSets = numberOfSets;
     this->setAssociativity = setAssociativity;
     
     //error handling
     bool error = false;
     if(!isPowerOfTwo(numberOfSets)) {
-        printError("Number of sets is not power of 2. (first parameter in Cache constructor)");
+        printError("Cache: Number of sets is not power of 2. (first parameter in Cache constructor)");
         error = true;
     }
     if(!isPowerOfTwo(blockSize)) {
-        printError("Block size is not power of 2. (second parameter in Cache constructor)");
+        printError("Cache: Block size is not power of 2. (second parameter in Cache constructor)");
         error = true;
     }
     if(!isPowerOfTwo(setAssociativity)) {
-        printError("Set Associativity is not power of 2. (third parameter in Cache constructor)");
+        printError("Cache: Set Associativity is not power of 2. (third parameter in Cache constructor)");
         error = true;
     }
     if(setAssociativity == 0) {
-        printError("Set Associativity cannot be equal to 0. (third parameter in Cache constructor)");
+        printError("Cache: Set Associativity cannot be equal to 0. (third parameter in Cache constructor)");
         error = true;
     }
     if(error == true) {
@@ -145,6 +154,20 @@ Cache::Cache(int numberOfSets, int blockSize, int setAssociativity)
     offsetSize = log2(blockSize);
     indexSize = log2(numberOfSets);
     hits = misses = 0;
+
+    try {
+        cacheLines = new CacheLine[numberOfRows];
+        nextFreeBlockInSet = new int[numberOfRows];
+    } 
+    catch (std::bad_alloc xa) { //catch if 
+        printError("Cache: Allocation failure");
+        return;
+    }
+
+    for(int i = 0; i < numberOfRows; i++) {
+        cacheLines[i].setBlockSize(blockSize);
+        nextFreeBlockInSet[i] = 0;
+    }
 }
 
 void Cache::incHits() {
@@ -155,44 +178,45 @@ void Cache::incMisses() {
     misses++;
 }
 
-bool Cache::isDataInCache(long long address) {
+long long Cache::isDataInCache(long long address) {
     long long index = this->getIndexFromAddress(address);
     long long tag = this->getTagFromAddress(address);
     return this->isBlockInCache(index, tag);
 }
 
-bool Cache::isBlockInCache(long long index, long long tag) {
+long long Cache::isBlockInCache(long long index, long long tag) {
 
     long long i = index*setAssociativity;
 
     if(cacheLines[i].isValid() == false) { //first time
-        return false;
+        return -1;
     }
     
     for( ; i < index*setAssociativity + nextFreeBlockInSet[index]; i++) {
-        if(cacheLines[i].getTag() == tag){
-            return true;
+        if(cacheLines[i].getTag() == tag) {
+            return i;
         }
     }
 
-    return false;
+    return -1;
 }
 
 bool Cache::isSetFull(long long index) {
     return nextFreeBlockInSet[index] == setAssociativity;
 }
 
-void Cache::insertDataToCache(long long address) {
+long long Cache::insertDataToCache(long long address) {
     long long index = this->getIndexFromAddress(address);
     long long tag = this->getTagFromAddress(address);
     return this->insertBlockToCache(index, tag);
 }
 
-void Cache::insertBlockToCache(long long index, long long tag) {
+long long Cache::insertBlockToCache(long long index, long long tag) {
     long long row = index * setAssociativity + nextFreeBlockInSet[index];
     cacheLines[row].setTag(tag);
     cacheLines[row].setValid(true);
     nextFreeBlockInSet[index]++;
+    return row;
 }
 
 
@@ -221,6 +245,20 @@ void Cache::evictAndInsertBlock(long long eIndex, long long eTag, long long iInd
             cacheLines[i].setTag(iTag);
         }
     }
+}
+
+void Cache::evictAndInsertBlock(long long row, long long insertionAddress) {
+
+    long long eIndex = row / setAssociativity;
+    long long iIndex = this->getIndexFromAddress(insertionAddress);
+    long long iTag = this->getTagFromAddress(insertionAddress);
+
+    if(eIndex != iIndex) {
+        printError("evictAndInsertBlock: Evicting and Incoming block don't belong to the same set!");
+        return;
+    }
+
+    cacheLines[row].setTag(iTag);
 }
 
 double Cache::hitRate() {
@@ -265,4 +303,9 @@ void Cache::displayCache() {
     }
 
     printf("\n");
+}
+
+Cache::~Cache() {
+    delete[] cacheLines;
+    delete[] nextFreeBlockInSet;
 }

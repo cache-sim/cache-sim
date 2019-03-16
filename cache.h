@@ -29,12 +29,14 @@ class CacheLine {
         int blockSize;
 
     public:
+        CacheLine();
         CacheLine(int blockSize);
         
         bool isValid();
         long long getTag();
         void setValid(bool valid);
         void setTag(long long tag); 
+        void setBlockSize(long long blockSize);
 };
 
 class Cache {
@@ -45,8 +47,8 @@ class Cache {
         int numberOfSets;
         int indexSize, offsetSize;
         long long hits, misses;
-        std::vector<CacheLine> cacheLines;
-        std::vector<int> nextFreeBlockInSet;
+        CacheLine* cacheLines;
+        int* nextFreeBlockInSet;
         //set is full if nextFreeBlockInSet == setAssociativity
 
     public:
@@ -55,13 +57,14 @@ class Cache {
         void incHits(); //Must be called when there is a cache hit
         void incMisses(); //Must be called when there is a cache miss
         
-        bool isDataInCache(long long address);
-        bool isBlockInCache(long long index, long long tag);
+        long long isDataInCache(long long address); //returns the row in cache data is present at
+        long long isBlockInCache(long long index, long long tag);
         bool isSetFull(long long index);
-        void insertDataToCache(long long address); //will insert data only if free cacheLines are available and return true (else return false)
-        void insertBlockToCache(long long index, long long tag);
+        long long insertDataToCache(long long address); //will insert data only if free cacheLines are available and returns row where data inserted
+        long long insertBlockToCache(long long index, long long tag);
         void evictAndInsertData(long long evictionAddress, long long insertionAddress); //A block is evicted when some other block is inserted
         void evictAndInsertBlock(long long eIndex, long long eTag, long long iIndex, long long iTag);
+        void evictAndInsertBlock(long long row, long long insertionAddress); //row to be evicted, insertionAddress: address of incoming data
         
         double hitRate();
         double missRate();
@@ -71,4 +74,6 @@ class Cache {
         long long getIndexFromAddress(long long address);
 
         void displayCache(); //for debugging
+
+        ~Cache(); //destructor
 };

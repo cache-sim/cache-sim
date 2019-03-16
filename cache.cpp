@@ -181,10 +181,10 @@ void Cache::incMisses() {
 long long Cache::isDataInCache(long long address) {
     long long index = this->getIndexFromAddress(address);
     long long tag = this->getTagFromAddress(address);
-    return this->isBlockInCache(index, tag);
+    return this->isCacheLineInCache(index, tag);
 }
 
-long long Cache::isBlockInCache(long long index, long long tag) {
+long long Cache::isCacheLineInCache(long long index, long long tag) {
 
     long long i = index*setAssociativity;
 
@@ -205,13 +205,13 @@ bool Cache::isSetFull(long long index) {
     return nextFreeBlockInSet[index] == setAssociativity;
 }
 
-long long Cache::insertDataToCache(long long address) {
+long long Cache::insertData(long long address) {
     long long index = this->getIndexFromAddress(address);
     long long tag = this->getTagFromAddress(address);
-    return this->insertBlockToCache(index, tag);
+    return this->insertCacheLine(index, tag);
 }
 
-long long Cache::insertBlockToCache(long long index, long long tag) {
+long long Cache::insertCacheLine(long long index, long long tag) {
     long long row = index * setAssociativity + nextFreeBlockInSet[index];
     cacheLines[row].setTag(tag);
     cacheLines[row].setValid(true);
@@ -225,17 +225,17 @@ void Cache::evictAndInsertData(long long evictionAddress, long long insertionAdd
     long long eTag = this->getTagFromAddress(evictionAddress);
     long long iIndex = this->getIndexFromAddress(insertionAddress);
     long long iTag = this->getTagFromAddress(insertionAddress);
-    evictAndInsertBlock(eIndex, eTag, iIndex, iTag);
+    evictAndInsertCacheLine(eIndex, eTag, iIndex, iTag);
 }
 
-void Cache::evictAndInsertBlock(long long eIndex, long long eTag, long long iIndex, long long iTag) {
+void Cache::evictAndInsertCacheLine(long long eIndex, long long eTag, long long iIndex, long long iTag) {
     
     if(eIndex != iIndex) {
-        printError("evictAndInsertBlock: Evicting and Incoming block don't belong to the same set!");
+        printError("evictAndInsertCacheLine: Evicting and Incoming block don't belong to the same set!");
         return;
     }
     else if(eTag == iTag) {
-        printError("evictAndInsertBlock: Evicting and Inserting block are the same!");
+        printError("evictAndInsertCacheLine: Evicting and Inserting block are the same!");
         return;
     }
 
@@ -247,14 +247,14 @@ void Cache::evictAndInsertBlock(long long eIndex, long long eTag, long long iInd
     }
 }
 
-void Cache::evictAndInsertBlock(long long row, long long insertionAddress) {
+void Cache::evictAndInsertCacheLine(long long row, long long insertionAddress) {
 
     long long eIndex = row / setAssociativity;
     long long iIndex = this->getIndexFromAddress(insertionAddress);
     long long iTag = this->getTagFromAddress(insertionAddress);
 
     if(eIndex != iIndex) {
-        printError("evictAndInsertBlock: Evicting and Incoming block don't belong to the same set!");
+        printError("evictAndInsertCacheLine: Evicting and Incoming block don't belong to the same set!");
         return;
     }
 

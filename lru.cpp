@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
         else { //cache miss
             cache.incMisses(); //increment misses
             if(!cache.isSetFull(cache.getIndexFromAddress(address))) { //if empty slot is available in cache to insert data
-                row = cache.insertDataToCache(address);
+                row = cache.insertData(address);
                 //insertDataToCache returns the row where the data is inserted
                 //lru specific begins
                 lastUsed[row] = timeElapsed;
@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
                 
                 //lru specific ends
                 
-                cache.evictAndInsertBlock(row, address);
+                cache.evictAndInsertCacheLine(row, address);
             }
         }
         //lru specific post action begins

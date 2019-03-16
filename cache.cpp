@@ -157,7 +157,7 @@ Cache::Cache(int numberOfSets, int blockSize, int setAssociativity) {
 
     try {
         cacheLines = new CacheLine[numberOfRows];
-        nextFreeBlockInSet = new int[numberOfRows];
+        nextFreeBlockInSet = new int[numberOfSets];
     } 
     catch (std::bad_alloc xa) { //catch if 
         printError("Cache: Allocation failure");

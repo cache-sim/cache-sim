@@ -58,13 +58,13 @@ class Cache {
         void incMisses(); //Must be called when there is a cache miss
         
         long long isDataInCache(long long address); //returns the row in cache data is present at
-        long long isBlockInCache(long long index, long long tag);
+        long long isCacheLineInCache(long long index, long long tag);
         bool isSetFull(long long index);
-        long long insertDataToCache(long long address); //will insert data only if free cacheLines are available and returns row where data inserted
-        long long insertBlockToCache(long long index, long long tag);
+        long long insertData(long long address); //will insert data only if free cacheLines are available and returns row where data inserted
+        long long insertCacheLine(long long index, long long tag);
         void evictAndInsertData(long long evictionAddress, long long insertionAddress); //A block is evicted when some other block is inserted
-        void evictAndInsertBlock(long long eIndex, long long eTag, long long iIndex, long long iTag);
-        void evictAndInsertBlock(long long row, long long insertionAddress); //row to be evicted, insertionAddress: address of incoming data
+        void evictAndInsertCacheLine(long long eIndex, long long eTag, long long iIndex, long long iTag);
+        void evictAndInsertCacheLine(long long row, long long insertionAddress); //row to be evicted, insertionAddress: address of incoming data
         
         double hitRate();
         double missRate();

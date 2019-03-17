@@ -69,10 +69,10 @@ int main(int argc, char *argv[]) {
                         min = i;
                     }
                 }
-                lastUsed[row] = timeElapsed;
 
                 row = min; //update row to be evicted
                 
+                lastUsed[row] = timeElapsed;
                 //lru specific ends
                 
                 cache.evictAndInsertCacheLine(row, address);

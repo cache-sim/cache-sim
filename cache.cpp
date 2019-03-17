@@ -166,6 +166,9 @@ Cache::Cache(int numberOfSets, int blockSize, int setAssociativity) {
 
     for(int i = 0; i < numberOfRows; i++) {
         cacheLines[i].setBlockSize(blockSize);
+    }
+
+    for(int i = 0; i < numberOfSets; i++) {
         nextFreeBlockInSet[i] = 0;
     }
 }

@@ -7,12 +7,14 @@ One level cache simulator.
 - [x] Implementing Cache.h header file. 
 - [ ] Testing Cache.h header file.
 - [ ] Implementing and testing cache replacement algorithms.
-- [ ] Python/Shell script to run the simulator.
+- [x] Python/Shell script to run the simulator.
 - [ ] Implementing and testing the matrix multiplication programs.
 - [ ] Analysis of first 4 points (Phase I - Easy)
 - [ ] Analysis of last 2 points (Phase II - Hard)
 
 ## Note: 
+
+```src``` repository contains the C++ code for the simulators and ```exe``` resository contains their executables.
 
 ```cache.h``` contains definition of CacheLine and Cache class. Look  through it and comment in the group if something is missing.
 

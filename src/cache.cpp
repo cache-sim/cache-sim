@@ -76,13 +76,22 @@ std::vector<long long> readTrace(FILE *trace) {
     *******************************************************/
 
     std::vector<long long> addresses; // stores addresses of all data accesses
-    char instruction[20], access[5], address[20];
+    char address[20], accessType;
+    long long readCounter = 0, writeCounter = 0;
 
     while(!feof(trace)) {
-        fscanf(trace, "%*s %*s %s", address);
+        fscanf(trace, "%*s %c %s", &accessType, address);
         addresses.push_back(hexadecimalToDecimal(address));
+        if(accessType == 'R')
+            readCounter++;
+        else{
+            writeCounter++;
+        }
     }
     addresses.pop_back();  //last line is read twice
+
+    printf("Total number of read instructions: %lld\n", readCounter);
+    printf("Total number of write instructions: %lld\n", writeCounter);
 
     return addresses;
 }

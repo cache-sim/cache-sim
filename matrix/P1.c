@@ -25,6 +25,7 @@ int main() {
         for(int j = 0; j < N; j++) {
             A[i][j] = rand()%N;
             B[i][j] = rand()%N;
+            C[i][j] = 0;
         }    
     }
     //printf("Done\n");

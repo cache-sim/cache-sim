@@ -23,6 +23,7 @@ else:
     inputTrace = sys.argv[5]
 
     if any(replacementPolicy in file for file in os.listdir("exe/")):
+        os.system("g++ src/" + replacementPolicy + ".cpp src/cache.cpp -o exe/" + replacementPolicy)    
         os.system("exe/./" + replacementPolicy + " " + inputTrace + " " + numberOfSets + " " + blockSize + " " + setAssociativity)
     
     else:

@@ -4,6 +4,11 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <chrono>
+
+//classes defined
+class CacheLine;
+class Cache;
 
 //error handling
 void printError(std::string errorMessage);
@@ -15,9 +20,9 @@ int log2(long long x);
 long long hexadecimalToDecimal(char hexVal[]);
 
 //I/O
-
-std::vector<long long> readTrace(char filePath[]); // takes in file path as parameter (use this)
-std::vector<long long> readTrace(FILE *trace); // takes in file pointer as parameter 
+ 
+long long getNextAddress(); // read a line from the trace file in stdout and returns the address of memory access
+void printResult(long long simulationTime, Cache &cache); // output resulf after analysis
 
 //cache classes
 

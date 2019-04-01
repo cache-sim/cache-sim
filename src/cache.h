@@ -59,6 +59,7 @@ class Cache {
     public:
         Cache(int numberOfSets, int blockSize, int setAssociativity);
 
+        bool warmedUp(); //check if the cache has been populated
         void incHits(); //Must be called when there is a cache hit
         void incMisses(); //Must be called when there is a cache miss
         

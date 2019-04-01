@@ -9,11 +9,9 @@ typedef long long ll;
 int main(int argc, char *argv[])
 {
 
-    vector<ll> addresses = readTrace(argv[1]);
-
-    ll numberOfSets = atoll(argv[2]);
-    ll blockSize = atoll(argv[3]);
-    ll setAssociativity = atoll(argv[4]);
+    ll numberOfSets = atoll(argv[1]);
+    ll blockSize = atoll(argv[2]);
+    ll setAssociativity = atoll(argv[3]);
 
     /*
     Tree with setAssociativity-1 nodes to keep track of least recently accessed element in cache.
@@ -40,8 +38,11 @@ int main(int argc, char *argv[])
     auto start = high_resolution_clock::now();
 
     //iterate through all addresses accessed
-    for (ll address : addresses)
+    while(true)
     {
+
+        ll address = getNextAddress();
+        if(address == 0) break; //reached EOF
 
         //check if address is present in cache
         ll row = cache.isDataInCache(address); //returns row in the cache

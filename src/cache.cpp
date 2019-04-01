@@ -85,7 +85,7 @@ void printResult(long long simulationTime, Cache &cache) {
     printf("Total number of read instructions: %lld\n", readCounter);
     printf("Total number of write instructions: %lld\n", writeCounter);
     printf("Simulation time : %lld ms\n", simulationTime);
-    printf("Total Number of data accesses: %lld\n", cache.getNumberOfHits() + cache.getNumberOfMisses());
+    printf("Total Number of data accesses (after warmup): %lld\n", cache.getNumberOfHits() + cache.getNumberOfMisses());
     printf("Hits: %lld\n", cache.getNumberOfHits());
     printf("Misses: %lld\n", cache.getNumberOfMisses());
     printf("Hit Ratio: %f\n", cache.hitRate() * 100);

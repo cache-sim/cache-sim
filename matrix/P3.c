@@ -23,13 +23,13 @@ int main() {
     if(A != NULL && B != NULL && C != NULL){
 
         //printf("Initialising A and B with random values\n");
-        for(i = 0; i < N; i++) {
-            for(int j = 0; j < N; j++) {
-                A[i*N + j] = rand()%N;
-                B[i*N + j] = rand()%N;
-                // C[i][j] = 0;
-            }    
-        }
+        // for(i = 0; i < N; i++) {
+        //     for(int j = 0; j < N; j++) {
+        //         A[i*N + j] = rand()%N;
+        //         B[i*N + j] = rand()%N;
+        //         // C[i][j] = 0;
+        //     }    
+        // }
         //printf("Done\n");
     
         //printf("Performing matrix multiplication\n");
@@ -43,9 +43,8 @@ int main() {
                         r=0;
                         for(int k = K; k < min(K+BLOCK, N); k++) {
                             //r variable seems useless
-                            r += (A[i*N + k] * B[k*N + j]);
+                            C[i*N + j] += (A[i*N + k] * B[k*N + j]);
                         }
-                        C[i*N + j] += r;
                     }
                 }
 

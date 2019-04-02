@@ -30,12 +30,13 @@ int main() {
         for(J = 0; J < N; J+= BLOCK){
             for(K = 0; K < N; K+= BLOCK){
                 for(int i = 0; i < N; i++) {
-                    for(int j = J; j < N; j++) {
-                        for(int k = K; k < N; k++) {
+                    for(int j = J; j < J + BLOCK; j++) {
+                        for(int k = K; k < K + BLOCK; k++) {
                             C[i*N + j] += (A[i*N + k] * B[k*N + j]);
                         }
                     }
                 }
+
             }
         }
 

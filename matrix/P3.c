@@ -4,13 +4,6 @@
 #define N 512
 #define BLOCK 4
 
-int min(int a, int b){
-    if(a < b)
-        return a;
-    else
-        return b;
-}
-
 int main() {
 
     int i, j, k, J, K, r;
@@ -36,18 +29,13 @@ int main() {
         
         for(J = 0; J < N; J+= BLOCK){
             for(K = 0; K < N; K+= BLOCK){
-
                 for(int i = 0; i < N; i++) {
-                    //if we check if N is divisble by B, there is no need for min function
-                    for(int j = J; j < min(J+BLOCK, N); j++) {
-                        r=0;
-                        for(int k = K; k < min(K+BLOCK, N); k++) {
-                            //r variable seems useless
+                    for(int j = J; j < N; j++) {
+                        for(int k = K; k < N; k++) {
                             C[i*N + j] += (A[i*N + k] * B[k*N + j]);
                         }
                     }
                 }
-
             }
         }
 

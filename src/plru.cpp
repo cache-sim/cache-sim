@@ -13,6 +13,9 @@ int main(int argc, char *argv[])
     ll blockSize = atoll(argv[2]);
     ll setAssociativity = atoll(argv[3]);
 
+    //initializing a cache with relevant parameters
+    Cache cache(numberOfSets, blockSize, setAssociativity);
+
     /*
     Tree with setAssociativity-1 nodes to keep track of least recently accessed element in cache.
     A tree which would look like
@@ -30,9 +33,6 @@ int main(int argc, char *argv[])
     for an 8-way setAssociativity
     */
     int *tree = (int *)calloc(numberOfSets * (setAssociativity - 1), sizeof(int));
-
-    //initializing a cache with relevant parameters
-    Cache cache(numberOfSets, blockSize, setAssociativity);
 
     //measure time
     auto start = high_resolution_clock::now();

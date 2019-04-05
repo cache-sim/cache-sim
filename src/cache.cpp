@@ -177,22 +177,24 @@ Cache::Cache(int numberOfSets, int blockSize, int setAssociativity) {
     }
 }
 
-bool Cache::warmedUp() {
+// bool Cache::warmedUp() {
 
-    for(static int i = 0; i < numberOfSets * setAssociativity; i++){
-        if( cacheLines[i].getTag() == 0){
-            return false;
-        }
-    }
-    return true;
-}
+//     for(static int i = 0; i < numberOfSets * setAssociativity; i++){
+//         if( cacheLines[i].getTag() == 0){
+//             return false;
+//         }
+//     }
+//     return true;
+// }
 
 void Cache::incHits() {
-    if(warmedUp()) hits++;
+    // if(warmedUp()) hits++;
+    hits++;
 }
 
 void Cache::incMisses() {
-    if(warmedUp()) misses++;
+    // if(warmedUp()) misses++;
+    misses++;
 }
 
 long long Cache::isDataInCache(long long address) {

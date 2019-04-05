@@ -5,11 +5,11 @@ One level cache simulator.
 ## Work to be done :
 
 - [x] Implementing Cache.h header file. 
-- [ ] Testing Cache.h header file.
+- [x] Testing Cache.h header file.
 - [x] Implementing cache replacement algorithms.
-- [ ] Testing cache replacement algorithms.
+- [x] Testing cache replacement algorithms.
 - [x] Python/Shell script to run the simulator.
-- [ ] Implementing and testing the matrix multiplication programs.
+- [x] Implementing and testing the matrix multiplication programs.
 - [ ] Analysis of first 4 points (Phase I - Easy)
 - [ ] Analysis of last 2 points (Phase II - Hard)
 

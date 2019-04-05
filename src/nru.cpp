@@ -73,14 +73,15 @@ int main(int argc,char *argv[]){
                                 //nru specific ends
                         }
                         else{
+                                ll temp = rowBegin;
                                 //nru specific begins
-                                while((row = rowBegin + rand() % (rowEnd - rowBegin)) == 0){ // check for a random cacheline which is not recently used in that set
-                                        continue;
+                                while(recentlyUsed[temp] == 1 && temp != rowEnd){ // check for a random cacheline which is not recently used in that set
+                                        temp++;
                                 }
 
-                                recentlyUsed[row] = 1; //update the row as recently used
+                                recentlyUsed[temp] = 1; //update the row as recently used
                                 //nru specific ends
-                                cache.evictAndInsertCacheLine(row,address);        
+                                cache.evictAndInsertCacheLine(temp,address);        
                         }
                 
                         //nru specific begins

@@ -22,15 +22,14 @@ int main(int argc,char *argv[]){
         ll numberOfSets = atoll(argv[2]);
         ll blockSize = atoll(argv[3]);
         ll setAssociativity = atoll(argv[4]);
-        
+
+        Cache cache(numberOfSets,blockSize,setAssociativity); //Cache initialisation with relevant parameters
 
         //nru specific allocation begins        
         recentlyUsed = (ll*)calloc(setAssociativity * numberOfSets , sizeof(ll));
         ll noOfCacheLines = setAssociativity * numberOfSets ; 
         ll counter = 0;
         //nru specific allocation ends
-
-            Cache cache(numberOfSets,blockSize,setAssociativity); //Cache initialisation with relevant parameters
 
         //Measure Time
         auto start = high_resolution_clock::now();
@@ -105,15 +104,11 @@ int main(int argc,char *argv[]){
         }
 
     auto stop = high_resolution_clock::now(); 
-    auto duration = duration_cast<microseconds>(stop - start);
+    auto duration = duration_cast<milliseconds>(stop - start);
 
     //output
-    cout << "Simulation time : " << duration.count() << " ms" << endl;
-    printf("Total Number of data accesses: %lld\n", cache.getNumberOfHits() + cache.getNumberOfMisses());
-    printf("Hits: %lld\n", cache.getNumberOfHits());
-    printf("Misses: %lld\n", cache.getNumberOfMisses());
-    printf("Hit Ratio: %f\n", cache.hitRate() * 100);
-
+    printResult(duration.count(), cache);
+    
     free(recentlyUsed);
 
     return 0;

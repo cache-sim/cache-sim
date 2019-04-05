@@ -19,11 +19,11 @@ int main(int argc, char *argv[]) {
     ll blockSize = atoll(argv[3]);
     ll setAssociativity = atoll(argv[4]);
 
+    Cache cache(numberOfSets, blockSize, setAssociativity); //initialise a cache with relevant parameters
+
     //lfu specific allocation begins
     timesUsed = (ll*) malloc(numberOfSets * setAssociativity * sizeof(ll)); 
     //lfu specific allocation ends 
-
-    Cache cache(numberOfSets, blockSize, setAssociativity); //initialise a cache with relevant parameters
 
     //measure time
     auto start = high_resolution_clock::now();

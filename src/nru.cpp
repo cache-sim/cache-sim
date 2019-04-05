@@ -92,7 +92,7 @@ int main(int argc,char *argv[]){
                                         }
                                         recentlyUsed[i] = 0;
                                 }
-                                counter = 1;
+                                counter = 0;
                         }
                         //nru specific ends
                 }

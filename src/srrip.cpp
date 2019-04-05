@@ -34,11 +34,11 @@ int main(int argc, char *argv[]){
     ll blockSize = atoll(argv[2]);
     ll setAssociativity = atoll(argv[3]);
 
+    Cache cache(numberOfSets, blockSize, setAssociativity); //initialise a cache with relevant parameters
+
     //allocating memory to state equal to that of cache
     state = (ll *)malloc(numberOfSets * setAssociativity * sizeof(ll));
     //allocation ends
-
-    Cache cache(numberOfSets, blockSize, setAssociativity); //initialise a cache with relevant parameters
 
     //measure time
     auto start = high_resolution_clock::now();

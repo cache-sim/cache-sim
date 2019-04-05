@@ -155,14 +155,10 @@ int main(int argc, char *argv[])
 
     //measure time
     auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start);
+    auto duration = duration_cast<milliseconds>(stop - start);
 
     //printing the results
-    cout << "Simulation time : " << duration.count() << " ms" << endl;
-    printf("Total Number of data accesses: %lld\n", cache.getNumberOfHits() + cache.getNumberOfMisses());
-    printf("Hits: %lld\n", cache.getNumberOfHits());
-    printf("Misses: %lld\n", cache.getNumberOfMisses());
-    printf("Hit Ratio: %f\n", cache.hitRate() * 100);
+    printResult(duration.count(), cache);
 
     free(tree);
 }

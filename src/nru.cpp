@@ -25,7 +25,7 @@ int main(int argc,char *argv[]){
         
 
         //nru specific allocation begins        
-        recentlyUsed = (ll*)malloc(setAssociativity * numberOfSets * sizeof(ll));
+        recentlyUsed = (ll*)calloc(setAssociativity * numberOfSets , sizeof(ll));
         ll noOfCacheLines = setAssociativity * numberOfSets ; 
         ll counter = 0;
         //nru specific allocation ends

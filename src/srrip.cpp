@@ -116,7 +116,7 @@ int main(int argc, char *argv[]){
     
     //measure time
     auto stop = high_resolution_clock::now(); 
-    auto duration = duration_cast<microseconds>(stop - start);
+    auto duration = duration_cast<milliseconds>(stop - start);
 
     //output
     cout << "Simulation time : " << duration.count() << " ms" << endl;

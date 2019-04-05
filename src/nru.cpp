@@ -25,7 +25,7 @@ int main(int argc,char *argv[]){
         
 
         //nru specific allocation begins        
-        recentlyUsed = (ll*)malloc(setAssociativity * numberOfSets * sizeof(ll));
+        recentlyUsed = (ll*)calloc(setAssociativity * numberOfSets , sizeof(ll));
         ll noOfCacheLines = setAssociativity * numberOfSets ; 
         ll counter = 0;
         //nru specific allocation ends
@@ -37,9 +37,13 @@ int main(int argc,char *argv[]){
 
             //Go through all addresses
 
-            for(ll address : addresses){
-                //address : the current address accessed by CPU
-                        ll row; // row in cache
+            while(true){
+
+                    ll address = getNextAddress();
+                    if(address == 0) break;
+
+                ll row; // row in cache
+                
                 if((row = cache.isDataInCache(address)) != -1){ //cache hit
                         //isDataInCache returns the row number where the data is present
                         cache.incHits();//increment hits
@@ -92,7 +96,7 @@ int main(int argc,char *argv[]){
                                         }
                                         recentlyUsed[i] = 0;
                                 }
-                                counter = 1;
+                                counter = 0;
                         }
                         //nru specific ends
                 }

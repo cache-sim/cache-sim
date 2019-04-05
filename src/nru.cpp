@@ -17,11 +17,9 @@ ll *recentlyUsed;
 
 int main(int argc,char *argv[]){
     
-        vector<ll> addresses = readTrace(argv[1]); //read the trace input file
-
-        ll numberOfSets = atoll(argv[2]);
-        ll blockSize = atoll(argv[3]);
-        ll setAssociativity = atoll(argv[4]);
+        ll numberOfSets = atoll(argv[1]);
+        ll blockSize = atoll(argv[2]);
+        ll setAssociativity = atoll(argv[3]);
 
         Cache cache(numberOfSets,blockSize,setAssociativity); //Cache initialisation with relevant parameters
 
@@ -108,7 +106,7 @@ int main(int argc,char *argv[]){
 
     //output
     printResult(duration.count(), cache);
-    
+
     free(recentlyUsed);
 
     return 0;

@@ -72,7 +72,7 @@ int main(int argc,char *argv[]){
                         else{
                                 ll temp = rowBegin;
                                 //nru specific begins
-                                while(recentlyUsed[temp] == 1 && temp != rowEnd){ // check for a random cacheline which is not recently used in that set
+                                while(recentlyUsed[temp] == 1 && temp != rowEnd -1){ // check for a random cacheline which is not recently used in that set
                                         temp++;
                                 }
 

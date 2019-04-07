@@ -15,24 +15,23 @@ ll *timesUsed;
 
 int main(int argc, char *argv[]) {
 
-    vector<ll> addresses = readTrace(argv[1]); //read the trace input file
-
     ll numberOfSets = atoll(argv[2]); //atoll : char* to long long
     ll blockSize = atoll(argv[3]);
     ll setAssociativity = atoll(argv[4]);
+
+    Cache cache(numberOfSets, blockSize, setAssociativity); //initialise a cache with relevant parameters
 
     //lfu specific allocation begins
     timesUsed = (ll*) malloc(numberOfSets * setAssociativity * sizeof(ll)); 
     //lfu specific allocation ends 
 
-    Cache cache(numberOfSets, blockSize, setAssociativity); //initialise a cache with relevant parameters
-
     //measure time
     auto start = high_resolution_clock::now();
 
-    //go through all addresses
-    for(ll address : addresses) {
-        //address : the current address accessed by CPU
+    while(true) {
+        
+        ll address = getNextAddress();
+        if(address == 0) break; // reached eof
 
         ll row; //row in cache
         if((row = cache.isDataInCache(address)) != -1) { //cache hit
@@ -85,16 +84,14 @@ int main(int argc, char *argv[]) {
 
     //measure time
     auto stop = high_resolution_clock::now(); 
-    auto duration = duration_cast<microseconds>(stop - start);
+    auto duration = duration_cast<milliseconds>(stop - start);
 
     //output
-    cout << "Simulation time : " << duration.count() << " ms" << endl;
-    printf("Total Number of data accesses: %lld\n", cache.getNumberOfHits() + cache.getNumberOfMisses());
-    printf("Hits: %lld\n", cache.getNumberOfHits());
-    printf("Misses: %lld\n", cache.getNumberOfMisses());
-    printf("Hit Ratio: %f\n", cache.hitRate() * 100);
+    printResult(duration.count(), cache);
 
+    //lfu specific deallocation begins
     free(timesUsed);
+    //lfu specific deallocation ends
 
     return 0;
 }

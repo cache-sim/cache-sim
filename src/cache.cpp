@@ -2,6 +2,9 @@
 
 #include "cache.h"
 
+//counter for number of reads and writes
+long long readCounter = 0, writeCounter = 0;
+
 //implementation of error handling
 void printError(std::string errorMessage) {
     std::cout << "ERROR: " << errorMessage << std::endl;
@@ -63,37 +66,29 @@ long long hexadecimalToDecimal(char hexVal[]) {
 
 //implementaion of I/O
 
-std::vector<long long> readTrace(char filePath[]) {
+long long getNextAddress() {
+    char instruction[20], accessType, address[20];
+    scanf("%s %c %s", instruction, &accessType, address);
+    if(strcpy(instruction, "#eof") == 0) //return address 0 if end of line
+        return 0;
 
-    FILE *trace = fopen(filePath, "r");
-    return readTrace(trace);
+    if(accessType == 'R')
+        readCounter++;
+    else
+        writeCounter++;
+
+    return hexadecimalToDecimal(address);
 }
 
-std::vector<long long> readTrace(FILE *trace) {
-    /******************************************************
-    * sample input line -> 0x7f110d39287e: R 0x7ffced08e7f8
-    * end of line -> #eof 
-    *******************************************************/
-
-    std::vector<long long> addresses; // stores addresses of all data accesses
-    char address[20], accessType;
-    long long readCounter = 0, writeCounter = 0;
-
-    while(!feof(trace)) {
-        fscanf(trace, "%*s %c %s", &accessType, address);
-        addresses.push_back(hexadecimalToDecimal(address));
-        if(accessType == 'R')
-            readCounter++;
-        else{
-            writeCounter++;
-        }
-    }
-    addresses.pop_back();  //last line is read twice
-
+void printResult(long long simulationTime, Cache &cache) {
+    
     printf("Total number of read instructions: %lld\n", readCounter);
     printf("Total number of write instructions: %lld\n", writeCounter);
-
-    return addresses;
+    printf("Simulation time : %lld ms\n", simulationTime);
+    printf("Total Number of data accesses: %lld\n", cache.getNumberOfHits() + cache.getNumberOfMisses());
+    printf("Hits: %lld\n", cache.getNumberOfHits());
+    printf("Misses: %lld\n", cache.getNumberOfMisses());
+    printf("Hit Ratio: %f\n", cache.hitRate() * 100);
 }
 
 //implementation of CacheLine class
@@ -182,11 +177,23 @@ Cache::Cache(int numberOfSets, int blockSize, int setAssociativity) {
     }
 }
 
+// bool Cache::warmedUp() {
+
+//     for(static int i = 0; i < numberOfSets * setAssociativity; i++){
+//         if( cacheLines[i].getTag() == 0){
+//             return false;
+//         }
+//     }
+//     return true;
+// }
+
 void Cache::incHits() {
+    // if(warmedUp()) hits++;
     hits++;
 }
 
 void Cache::incMisses() {
+    // if(warmedUp()) misses++;
     misses++;
 }
 

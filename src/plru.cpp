@@ -9,11 +9,12 @@ typedef long long ll;
 int main(int argc, char *argv[])
 {
 
-    vector<ll> addresses = readTrace(argv[1]);
+    ll numberOfSets = atoll(argv[1]);
+    ll blockSize = atoll(argv[2]);
+    ll setAssociativity = atoll(argv[3]);
 
-    ll numberOfSets = atoll(argv[2]);
-    ll blockSize = atoll(argv[3]);
-    ll setAssociativity = atoll(argv[4]);
+    //initializing a cache with relevant parameters
+    Cache cache(numberOfSets, blockSize, setAssociativity);
 
     /*
     Tree with setAssociativity-1 nodes to keep track of least recently accessed element in cache.
@@ -33,15 +34,15 @@ int main(int argc, char *argv[])
     */
     int *tree = (int *)calloc(numberOfSets * (setAssociativity - 1), sizeof(int));
 
-    //initializing a cache with relevant parameters
-    Cache cache(numberOfSets, blockSize, setAssociativity);
-
     //measure time
     auto start = high_resolution_clock::now();
 
     //iterate through all addresses accessed
-    for (ll address : addresses)
+    while(true)
     {
+
+        ll address = getNextAddress();
+        if(address == 0) break; //reached EOF
 
         //check if address is present in cache
         ll row = cache.isDataInCache(address); //returns row in the cache
@@ -154,14 +155,10 @@ int main(int argc, char *argv[])
 
     //measure time
     auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start);
+    auto duration = duration_cast<milliseconds>(stop - start);
 
     //printing the results
-    cout << "Simulation time : " << duration.count() << " ms" << endl;
-    printf("Total Number of data accesses: %lld\n", cache.getNumberOfHits() + cache.getNumberOfMisses());
-    printf("Hits: %lld\n", cache.getNumberOfHits());
-    printf("Misses: %lld\n", cache.getNumberOfMisses());
-    printf("Hit Ratio: %f\n", cache.hitRate() * 100);
+    printResult(duration.count(), cache);
 
     free(tree);
 }

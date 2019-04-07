@@ -17,29 +17,30 @@ ll *recentlyUsed;
 
 int main(int argc,char *argv[]){
     
-        vector<ll> addresses = readTrace(argv[1]); //read the trace input file
+        ll numberOfSets = atoll(argv[1]);
+        ll blockSize = atoll(argv[2]);
+        ll setAssociativity = atoll(argv[3]);
 
-        ll numberOfSets = atoll(argv[2]);
-        ll blockSize = atoll(argv[3]);
-        ll setAssociativity = atoll(argv[4]);
-        
+        Cache cache(numberOfSets,blockSize,setAssociativity); //Cache initialisation with relevant parameters
 
         //nru specific allocation begins        
-        recentlyUsed = (ll*)malloc(setAssociativity * numberOfSets * sizeof(ll));
+        recentlyUsed = (ll*)calloc(setAssociativity * numberOfSets , sizeof(ll));
         ll noOfCacheLines = setAssociativity * numberOfSets ; 
         ll counter = 0;
         //nru specific allocation ends
-
-            Cache cache(numberOfSets,blockSize,setAssociativity); //Cache initialisation with relevant parameters
 
         //Measure Time
         auto start = high_resolution_clock::now();
 
             //Go through all addresses
 
-            for(ll address : addresses){
-                //address : the current address accessed by CPU
-                        ll row; // row in cache
+            while(true){
+
+                    ll address = getNextAddress();
+                    if(address == 0) break;
+
+                ll row; // row in cache
+                
                 if((row = cache.isDataInCache(address)) != -1){ //cache hit
                         //isDataInCache returns the row number where the data is present
                         cache.incHits();//increment hits
@@ -69,14 +70,15 @@ int main(int argc,char *argv[]){
                                 //nru specific ends
                         }
                         else{
+                                ll temp = rowBegin;
                                 //nru specific begins
-                                while((row = rowBegin + rand() % (rowEnd - rowBegin)) == 0){ // check for a random cacheline which is not recently used in that set
-                                        continue;
+                                while(recentlyUsed[temp] == 1 && temp != rowEnd -1){ // check for a random cacheline which is not recently used in that set
+                                        temp++;
                                 }
 
-                                recentlyUsed[row] = 1; //update the row as recently used
+                                recentlyUsed[temp] = 1; //update the row as recently used
                                 //nru specific ends
-                                cache.evictAndInsertCacheLine(row,address);        
+                                cache.evictAndInsertCacheLine(temp,address);        
                         }
                 
                         //nru specific begins
@@ -92,7 +94,7 @@ int main(int argc,char *argv[]){
                                         }
                                         recentlyUsed[i] = 0;
                                 }
-                                counter = 1;
+                                counter = 0;
                         }
                         //nru specific ends
                 }
@@ -100,14 +102,10 @@ int main(int argc,char *argv[]){
         }
 
     auto stop = high_resolution_clock::now(); 
-    auto duration = duration_cast<microseconds>(stop - start);
+    auto duration = duration_cast<milliseconds>(stop - start);
 
     //output
-    cout << "Simulation time : " << duration.count() << " ms" << endl;
-    printf("Total Number of data accesses: %lld\n", cache.getNumberOfHits() + cache.getNumberOfMisses());
-    printf("Hits: %lld\n", cache.getNumberOfHits());
-    printf("Misses: %lld\n", cache.getNumberOfMisses());
-    printf("Hit Ratio: %f\n", cache.hitRate() * 100);
+    printResult(duration.count(), cache);
 
     free(recentlyUsed);
 

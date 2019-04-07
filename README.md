@@ -10,7 +10,7 @@ One level cache simulator.
 - [x] Testing cache replacement algorithms.
 - [x] Python/Shell script to run the simulator.
 - [x] Implementing and testing the matrix multiplication programs.
-- [ ] Analysis of first 4 points (Phase I - Easy)
+- [x] Analysis of first 4 points (Phase I - Easy)
 - [ ] Analysis of last 2 points (Phase II - Hard)
 
 ## Note: 

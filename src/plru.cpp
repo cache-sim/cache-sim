@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
         
     for an 8-way setAssociativity
     */
-    int *tree = (int *)calloc(numberOfSets * (setAssociativity - 1), sizeof(int));
+    bool *tree = (bool *)calloc(numberOfSets * (setAssociativity - 1), sizeof(bool));
 
     //measure time
     auto start = high_resolution_clock::now();
@@ -59,22 +59,22 @@ int main(int argc, char *argv[])
             node = node / 2 + setAssociativity / 2; //mapping the hit row to a leaf node in the tree
             if (row % 2 == 0)
             {
-                tree[setNumber * (setAssociativity - 1) + node - 1] = 1; //left child was recently accessed
+                tree[setNumber * (setAssociativity - 1) + node - 1] = true; //left child was recently accessed
             }
             else
             {
-                tree[setNumber * (setAssociativity - 1) + node - 1] = 0; //right child was recently accessed
+                tree[setNumber * (setAssociativity - 1) + node - 1] = false; //right child was recently accessed
             }
 
             while (node > 0)
             {
                 if (node % 2 == 0)
                 {
-                    tree[setNumber * (setAssociativity - 1) + node / 2 - 1] = 1;
+                    tree[setNumber * (setAssociativity - 1) + node / 2 - 1] = true;
                 }
                 else
                 {
-                    tree[setNumber * (setAssociativity - 1) + node / 2 - 1] = 0;
+                    tree[setNumber * (setAssociativity - 1) + node / 2 - 1] = false;
                 }
                 node /= 2;
             }
@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
                 setNumber = row / setAssociativity; //the set number to choose the corresponding tree
                 while (node < setAssociativity / 2)
                 {
-                    if (tree[setNumber * (setAssociativity - 1) + node - 1] == 0)
+                    if (tree[setNumber * (setAssociativity - 1) + node - 1] == false)
                     {
                         node = node * 2;
                     }
@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
                     }
                 } //node can vary from setAssociativity/2 to setAssociativity-1
 
-                if (tree[setNumber * (setAssociativity - 1) + node - 1] == 0)
+                if (tree[setNumber * (setAssociativity - 1) + node - 1] == false)
                 {
                     node = 2 * (node - setAssociativity / 2);
                 }
@@ -132,21 +132,21 @@ int main(int argc, char *argv[])
             node = node / 2 + setAssociativity / 2; //mapping the hit row to a leaf node in the tree
             if (row % 2 == 0)
             {
-                tree[setNumber * (setAssociativity - 1) + node - 1] = 1; //left child was recently accessed
+                tree[setNumber * (setAssociativity - 1) + node - 1] = true; //left child was recently accessed
             }
             else
             {
-                tree[setNumber * (setAssociativity - 1) + node - 1] = 0; //right child was recently accessed
+                tree[setNumber * (setAssociativity - 1) + node - 1] = false; //right child was recently accessed
             }
             while (node > 0)
             {
                 if (node % 2 == 0)
                 {
-                    tree[setNumber * (setAssociativity - 1) + node / 2 - 1] = 1;
+                    tree[setNumber * (setAssociativity - 1) + node / 2 - 1] = true;
                 }
                 else
                 {
-                    tree[setNumber * (setAssociativity - 1) + node / 2 - 1] = 0;
+                    tree[setNumber * (setAssociativity - 1) + node / 2 - 1] = false;
                 }
                 node /= 2;
             }

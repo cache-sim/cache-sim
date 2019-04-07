@@ -2,7 +2,10 @@
 
 One level cache simulator.
 
-## Work to be done :
+## How to run:
+Navigate to the cloned directory and run ```./cache.py```
+
+## Work to be done:
 
 - [x] Implementing Cache.h header file. 
 - [x] Testing Cache.h header file.
@@ -15,11 +18,8 @@ One level cache simulator.
 
 ## Note: 
 
-```src``` repository contains the C++ code for the simulators and ```exe``` resository contains their executables.
+```src``` repository contains the C++ code for the simulators. ```exe``` repository will contain the executables generated while running the program.
 
-```cache.h``` contains definition of CacheLine and Cache class. Look  through it and comment in the group if something is missing.
+```cache.h``` contains definition of CacheLine and Cache class.```cache.cpp``` file will contain the implementation of classes in ```cache.h```.
 
-```cache.cpp``` file will contain the implementation of classes in ```cache.h```. Go through this [link](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=13&ved=2ahUKEwiq0fuKg_fgAhUTf30KHan4D2gQFjAMegQIBBAC&url=http%3A%2F%2Fwww.math.uaa.alaska.edu%2F~afkjm%2Fcsce211%2Fhandouts%2FSeparateCompilation.pdf&usg=AOvVaw38Xpw3O7L0dEYuSApDESES) to see how.
-
-Cache test files : https://drive.google.com/open?id=1M-cCyml7V0-d4SJJW1TOe1-3g1ucbBL0  
 Traces for the 3 programs in ```/matrix``` can be found [here](https://drive.google.com/open?id=1JsXtNrd9Myawke7c2M9BEU8nSjW3ATSR)

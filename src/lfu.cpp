@@ -15,9 +15,9 @@ ll *timesUsed;
 
 int main(int argc, char *argv[]) {
 
-    ll numberOfSets = atoll(argv[2]); //atoll : char* to long long
-    ll blockSize = atoll(argv[3]);
-    ll setAssociativity = atoll(argv[4]);
+    ll numberOfSets = atoll(argv[1]); //atoll : char* to long long
+    ll blockSize = atoll(argv[2]);
+    ll setAssociativity = atoll(argv[3]);
 
     Cache cache(numberOfSets, blockSize, setAssociativity); //initialise a cache with relevant parameters
 

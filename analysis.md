@@ -33,6 +33,10 @@ PLRU has an anomoly: sudden decrease in hit ratio for block size 64. We are not 
 
 ![P2: Varying block size](./images/varying-blocksize-P2.png)
 
+In P2, inside the k for loop, one value of A is accessed and an entire row of B and C is accessed. Two accomadate two rows of B and C, the cache needs to atleast a block size of 32. Hence till 32, LRU, SRRIP and PLRU have a drastic increase and NRU and LFU have a steady increase. Also, hit ratio almost saturates after block size 32 in SRRIP, LRU and PLRU for the same reason. 
+
+NRU and LFU perform poorer from SRRIP and LRU due to poor choice of cache line for eviction. Thus hit ratio is below 90 for block size 32 and 64. But for block size 128, the cache is big enough to hold so many values of matrix that the effect of cache replacement policy will not be as significant. Hence we see a sudden increase in hit ratio for NRU and LFU (also PLRU) with block size 128.
+
 ![P3: Varying block size](./images/varying-blocksize-P3.png)
 
 ### Impact of Number of Sets

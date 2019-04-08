@@ -23,3 +23,11 @@ Navigate to the cloned directory and run ```./cache.py```
 ```cache.h``` contains definition of CacheLine and Cache class.```cache.cpp``` file will contain the implementation of classes in ```cache.h```.
 
 Traces for the 3 programs in ```/matrix``` can be found [here](https://drive.google.com/open?id=1JsXtNrd9Myawke7c2M9BEU8nSjW3ATSR)
+
+## Contributors:
+- Shanthanu S Rai
+- Rohit M P
+- Shashwath
+- Nishanth
+- Varun Pattar
+- Narayan

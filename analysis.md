@@ -31,6 +31,8 @@ During eviction, LRU and SRRIP mostly remove values pertaining to B over A. This
 
 PLRU has an anomoly: sudden decrease in hit ratio for block size 64. We are not sure of the exact reason for this. It might be due to the undeterministic nature of bit-PLRU algorithm.
 
+Due to column major access of B, for all block sizes we analysed, B will always suffer a lot of cold start misses. Hence we observe that all hit ratios are capped at 95% for all replacement policies.
+
 ![P2: Varying block size](./images/varying-blocksize-P2.png)
 
 In P2, inside the k for loop, one value of A is accessed and an entire row of B and C is accessed. Two accomadate two rows of B and C, the cache needs to atleast a block size of 32. Hence till 32, LRU, SRRIP and PLRU have a drastic increase and NRU and LFU have a steady increase. Also, hit ratio almost saturates after block size 32 in SRRIP, LRU and PLRU for the same reason. 
@@ -38,6 +40,14 @@ In P2, inside the k for loop, one value of A is accessed and an entire row of B 
 NRU and LFU perform poorer from SRRIP and LRU due to poor choice of cache line for eviction. Thus hit ratio is below 90 for block size 32 and 64. But for block size 128, the cache is big enough to hold so many values of matrix that the effect of cache replacement policy will not be as significant. Hence we see a sudden increase in hit ratio for NRU and LFU (also PLRU) with block size 128.
 
 ![P3: Varying block size](./images/varying-blocksize-P3.png)
+
+We have analysed P3 with tile size 4. 
+
+Overall Analysis:
+
+P2 has more temporal locality than P1. Hence, the hit ratio for all replacement policies is better for P2 than P1. 
+
+P3 has more temporal locality than P1. Hence, the hit ratio for all replacement policies with block size  less than 16 is better for P3 than P2. But this trend stops after block size 16. This could be because of thrashing in P3, which negates it's high temporal locality and hence a lesser hit ratio.
 
 ### Impact of Number of Sets
 

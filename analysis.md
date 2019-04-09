@@ -68,9 +68,22 @@ Following are the results obtained:
 
 ![P1: Varying number of sets](./images/varying-number-of-sets-P1.png)
 
+##### Analysis:
+
+In both LRU and SRRIP, when the number of sets becomes 32, the total number of double variables that the cache can hold is 512, which is the size of one row of the matrix and since the values stored depends on the number of accesses, matrix A's elements are stored in the cache leading to high number of hits. In both LRU and SRRIP replacement algorithms, as mentioned above, the hit rate has a cap on the performance due to the unnovoidable cold start misses during the column major accesses of the elements in the B matrix. Hence, with the increase in number of sets (leading to an increase in block size), the increase in hit ratio is very minimal.
+
+In NRU there is a constant increase in the hit ratio simply due to the fact that the cache size increasese with increase in number of sets. This enables the cache to hold onto the values of a row in matrix A for longer, hence giving a higher hit ratio. The algorithm still evicts the wrong elements (i.e. the elements in the beginning of the cache set), but the effect is reduced gradually due to the increasing size of the cache.
+
+
+
 ![P2: Varying number of sets](./images/varying-number-of-sets-P2.png)
 
+##### Analysis:
+
+
+
 ![P3: Varying number of sets](./images/varying-number-of-sets-P3.png)
+
 
 ### Impact of Set Associativity
 

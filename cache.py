@@ -25,7 +25,7 @@ else:
     if not os.path.isdir("exe"):
         os.system("mkdir exe")
 
-    if any(replacementPolicy+".cpp" in file for file in os.listdir("src/")):
+    if any(replacementPolicy+".cpp" in file for file in os.listdir("src/")) and replacementPolicy != "cache":
         os.system("g++ src/" + replacementPolicy + ".cpp src/cache.cpp -o exe/" + replacementPolicy)    
         os.system("gzip -dc " + inputTrace + " | exe/" + replacementPolicy + " " + numberOfSets + " " + blockSize + " " + setAssociativity)
     

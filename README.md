@@ -18,7 +18,7 @@ Navigate to the cloned directory and run ```./cache.py```
 
 ## Note: 
 
-```src``` repository contains the C++ code for the simulators. ```exe``` repository will contain the executables generated while running the program.
+```src``` folder contains the C++ code for the simulators. ```exe``` folder will contain the executables generated while running the program.
 
 ```cache.h``` contains definition of CacheLine and Cache class.```cache.cpp``` file will contain the implementation of classes in ```cache.h```.
 

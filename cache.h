@@ -20,18 +20,9 @@ void printResult(Cache* cache);
 class Cache{
 
     private:
-        long long cacheSize;
-        long long blockSize;
-        long long setAssociativity;
-        long long numberOfSets;
-        int offsetSize;
-        int indexSize;
         long long hits, misses;
-        long long* cacheBlocks;
 
     public:
-        Cache(long long cacheSize, long long blockSize, long long setASsociativity);
-
         void incHits();
         void incMisses();
         long long getTag(long long address);
@@ -39,20 +30,22 @@ class Cache{
         long long getBlockPosition(long long address);
         void insert(long long address, long long blockToReplace);
 
-        long long getCacheSize();
-        long long getBlockSize();
-        long long getSetAssociativity();
-        long long getNumberOfSets();
-        long long getOffsetSize();
-        long long getIndexSize();
         long long getHits();
         long long getMisses();
         float getHitRate();
-        long long* getCacheBlocks();
 
         virtual long long getBlockToReplace(long long address) = 0;
         virtual void update(long long blockToReplace, int status) = 0;
 
-        ~Cache();
+    protected:
+        Cache(long long cacheSize, long long blockSize, long long setASsociativity);
+        long long cacheSize;
+        long long blockSize;
+        long long setAssociativity;
+        long long numberOfSets;
+        int offsetSize;
+        int indexSize;
+        long long* cacheBlocks;
+        virtual ~Cache() = 0;
 
 };

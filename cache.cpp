@@ -118,30 +118,6 @@ void Cache::insert(ll address, ll blockToReplace){
     cacheBlocks[blockToReplace] = address;
 }
 
-ll Cache::getCacheSize(){
-    return cacheSize;
-}
-
-ll Cache::getBlockSize(){
-    return blockSize;
-}
-
-ll Cache::getSetAssociativity(){
-    return setAssociativity;
-}
-
-ll Cache::getNumberOfSets(){
-    return numberOfSets;
-}
-
-ll Cache::getOffsetSize(){
-    return offsetSize;
-}
-
-ll Cache::getIndexSize(){
-    return indexSize;
-}
-
 ll Cache::getHits(){
     return hits;
 }
@@ -154,6 +130,4 @@ float Cache::getHitRate(){
     return (100.0*hits)/(hits+misses);
 }
 
-ll* Cache::getCacheBlocks(){
-    return cacheBlocks;
-}
+Cache::~Cache(){}

@@ -3,6 +3,7 @@
 #include <chrono>
 #include <fstream>
 #include <vector>
+#include <sstream>
 #include "cache.h" //contains all auxillary functions
 #include "plru.h"
 // #include "policy.h"
@@ -30,19 +31,20 @@ int main(int argc, char *argv[]){
         
     ifstream params;
     params.open("params.cfg");
-    string line;
-    getline(params, line);
-    int levels = stoi(line);
+    string word;
+    params >> word;
+    int levels = stoi(word.c_str());
+
     vector<Cache*> cache(levels);
 
     int iterator = 0;
-    while(params){
+    while(!params.eof()){
         string policy;
-        getline(params, policy);
-        int cs, bs, sa; //cacheSize, blockSize, setAssociativity
-        getline(params, line); cs = stoll(line);
-        getline(params, line); bs = stoll(line);
-        getline(params, line); sa = stoll(line);
+        params >> policy;
+        ll cs, bs, sa; //cacheSize, blockSize, setAssociativity
+        params >> word; cs = stoll(word.c_str());
+        params >> word; bs = stoll(word.c_str());
+        params >> word; sa = stoll(word.c_str());
         cache[iterator++] = createCacheInstance(policy, cs, bs, sa);
     }
 

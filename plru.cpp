@@ -21,7 +21,7 @@
     */
     PLRU::PLRU(ll cacheSize, ll blockSize, ll setAssociativity) : 
         Cache(cacheSize, blockSize, setAssociativity){
-            bool *tree = (bool *)calloc(numberOfSets * (setAssociativity - 1), sizeof(bool));
+            tree = (bool *)calloc(numberOfSets * (setAssociativity - 1), sizeof(bool));
         }
 
     ll PLRU::getBlockToReplace(ll address){
@@ -29,7 +29,7 @@
         int node = 1;
         ll index = getIndex(address);
         while(node < setAssociativity){
-            if(tree[index*setAssociativity + node - 1]){
+            if(tree[index*(setAssociativity-1) + node - 1]){
                 node = node*2 + 1;
             }
             else{

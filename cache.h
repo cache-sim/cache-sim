@@ -39,9 +39,19 @@ class Cache{
         long long getBlockPosition(long long address);
         void insert(long long address, long long blockToReplace);
 
+        long long getCacheSize();
+        long long getBlockSize();
+        long long getSetAssociativity();
+        long long getNumberOfSets();
+        long long getOffsetSize();
+        long long getIndexSize();
         long long getHits();
         long long getMisses();
         float getHitRate();
+        long long* getCacheBlocks();
+
+        virtual long long getBlockToReplace(long long address) = 0;
+        virtual void update(long long blockToReplace, int status) = 0;
 
         ~Cache();
 

@@ -11,7 +11,7 @@ using namespace std::chrono;
 
 typedef long long ll; 
 
-Cache* createInstance(string& policy, ll cs, ll bs, ll sa){
+Cache* createCacheInstance(string& policy, ll cs, ll bs, ll sa){
     
     // check validity here and exit if invalid
     if(!strcmp(policy, "plru")){
@@ -57,7 +57,7 @@ int main(int argc, char *argv[]){
             if(block == -1){ //cache miss
                 cache[levelItr]->incMisses();
                 // incMisses will be implemented in cache.cpp
-                ll blockToReplace = getBlockToReplace();
+                ll blockToReplace = cache[levelItr]->getBlockToReplace(address);
                 // getBlockToEvict will be implemented in policy.cpp
                 cache[levelItr]->insert(address, blockToReplace);
                 // insert will be implemented in cache.cpp

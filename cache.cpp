@@ -7,7 +7,7 @@ ll readCounter=0, writeCounter=0;
 // helper functions
 
 bool isValidConfig(ll  cs, ll bs, ll sa){ // needs more analysis
-    if(cs/(bs*sa) - (int)(cs/(bs*sa)) < 0.0001){ // ignoring precision errors
+    if((float)cs/(bs*sa) - (int)(cs/(bs*sa)) < 0.0001){ // ignoring precision errors
         return true;
     }
     else {
@@ -34,7 +34,7 @@ ll hexToDec(char hexVal[]) {
     return decVal;
 }
 
-int log2(long long x) {
+int log2(ll x) {
     int power = 0;
     while(x > 1) {
         x = x>>1;
@@ -92,18 +92,18 @@ void Cache::incMisses(){
     misses++;
 }
 
-long long Cache::getTag(long long address){
+ll Cache::getTag(ll address){
     return address>>(indexSize + offsetSize);
 }
 
-long long Cache::getIndex(long long address){
+ll Cache::getIndex(ll address){
     return (address>>offsetSize) & ((1<<indexSize)-1);
 }
 
-long long Cache::getBlockPosition(long long address){
-    long long index = getIndex(address);
-    long long tag = getTag(address);
-    long long iterator;
+ll Cache::getBlockPosition(ll address){
+    ll index = getIndex(address);
+    ll tag = getTag(address);
+    ll iterator;
     for(iterator=index*setAssociativity; iterator<index*(setAssociativity+1); iterator++){
         if(tag == cacheBlocks[iterator]){
             return iterator;
@@ -114,18 +114,46 @@ long long Cache::getBlockPosition(long long address){
     }
 }
 
-void Cache::insert(long long address, long long blockToReplace){
+void Cache::insert(ll address, ll blockToReplace){
     cacheBlocks[blockToReplace] = address;
 }
 
-long long Cache::getHits(){
+ll Cache::getCacheSize(){
+    return cacheSize;
+}
+
+ll Cache::getBlockSize(){
+    return blockSize;
+}
+
+ll Cache::getSetAssociativity(){
+    return setAssociativity;
+}
+
+ll Cache::getNumberOfSets(){
+    return numberOfSets;
+}
+
+ll Cache::getOffsetSize(){
+    return offsetSize;
+}
+
+ll Cache::getIndexSize(){
+    return indexSize;
+}
+
+ll Cache::getHits(){
     return hits;
 }
 
-long long Cache::getMisses(){
+ll Cache::getMisses(){
     return misses;
 }
 
 float Cache::getHitRate(){
     return (100.0*hits)/(hits+misses);
+}
+
+ll* Cache::getCacheBlocks(){
+    return cacheBlocks;
 }

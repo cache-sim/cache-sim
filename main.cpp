@@ -78,7 +78,7 @@ int main(int argc, char *argv[]){
     auto duration = duration_cast<seconds>(stop-start);
 
     for(int leveltr=0; levelItr<levels; levelItr++){
-        cache[levelItr]->printResults();
+        printResult(cache[levelItr]);
         // will be implemented in cache.cpp
         delete cache[levelItr];
     }

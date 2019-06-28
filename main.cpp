@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <chrono>
-#include <fstream.h>
+#include <fstream>
+#include <vector>
 #include "cache.h" //contains all auxillary functions
 #include "plru.h"
 // #include "policy.h"
@@ -9,12 +10,12 @@
 using namespace std;
 using namespace std::chrono;
 
-typedef long long ll; 
+#define ll long long
 
 Cache* createCacheInstance(string& policy, ll cs, ll bs, ll sa){
     
     // check validity here and exit if invalid
-    if(!strcmp(policy, "plru")){
+    if(!strcmp(policy.c_str(), "plru")){
         Cache* cache = new PLRU(cs, bs, sa);
         return cache;
     }
@@ -51,7 +52,7 @@ int main(int argc, char *argv[]){
         ll address = getNextAddress();
         if(address == -1) break; //reached eof
 
-        for(int levelItr=0; levelIt<levels; levelItr++){
+        for(int levelItr=0; levelItr<levels; levelItr++){
             ll block = cache[levelItr]->getBlockPosition(address);
             // getBlockPosition will be implemented in cache.cpp
             if(block == -1){ //cache miss
@@ -77,10 +78,10 @@ int main(int argc, char *argv[]){
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<seconds>(stop-start);
 
-    for(int leveltr=0; levelItr<levels; levelItr++){
+    for(int levelItr=0; levelItr<levels; levelItr++){
         printResult(cache[levelItr]);
         // will be implemented in cache.cpp
-        delete cache[levelItr];
+        free(cache[levelItr]);
     }
 
     return 0;

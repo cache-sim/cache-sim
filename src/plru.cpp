@@ -44,10 +44,10 @@
         ll setNumber = blockToReplace / setAssociativity;
         while(node>1){
             if(node%2){
-                cacheBlocks[setNumber*(setAssociativity-1) + node/2] = false;
+                tree[setNumber*(setAssociativity-1) + node/2] = false;
             }
             else{
-                cacheBlocks[setNumber*(setAssociativity-1) + node/2] = true;
+                tree[setNumber*(setAssociativity-1) + node/2] = true;
             }
             node /= 2;
         }

@@ -83,7 +83,7 @@ int main(int argc, char *argv[]){
     for(int levelItr=0; levelItr<levels; levelItr++){
         printResult(cache[levelItr]);
         // will be implemented in cache.cpp
-        free(cache[levelItr]);
+        delete cache[levelItr];
     }
 
     return 0;

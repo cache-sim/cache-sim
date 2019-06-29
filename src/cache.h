@@ -38,6 +38,8 @@ class Cache{
         virtual long long getBlockToReplace(long long address) = 0;
         virtual void update(long long blockToReplace, int status) = 0;
 
+        virtual ~Cache();
+
     protected:
         Cache(long long cacheSize, long long blockSize, long long setAssociativity);
         long long cacheSize;
@@ -46,6 +48,4 @@ class Cache{
         long long numberOfSets;
         int offsetSize;
         int indexSize;
-        virtual ~Cache() = 0;
-
 };

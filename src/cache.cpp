@@ -109,9 +109,7 @@ ll Cache::getBlockPosition(ll address){
             return iterator;
         }
     }
-    if(iterator == index*(setAssociativity+1)){
-        return -1;
-    }
+    return -1;
 }
 
 void Cache::insert(ll address, ll blockToReplace){

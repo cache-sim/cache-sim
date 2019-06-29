@@ -35,7 +35,7 @@ Cache* createCacheInstance(string& policy, ll cs, ll bs, ll sa){
 int main(int argc, char *argv[]){
         
     ifstream params;
-    params.open("params.cfg");
+    params.open(argv[1]);
     string word;
     params >> word;
     int levels = stoi(word.c_str());

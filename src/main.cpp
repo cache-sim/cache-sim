@@ -43,7 +43,7 @@ int main(int argc, char *argv[]){
     vector<Cache*> cache(levels);
 
     int iterator = 0;
-    while(!params.eof()){
+    while(iterator < levels){
         string policy;
         params >> policy;
         ll cs, bs, sa; //cacheSize, blockSize, setAssociativity

@@ -115,7 +115,7 @@ ll Cache::getBlockPosition(ll address){
 }
 
 void Cache::insert(ll address, ll blockToReplace){
-    cacheBlocks[blockToReplace] = address;
+    cacheBlocks[blockToReplace] = getTag(address);
 }
 
 ll Cache::getHits(){
@@ -127,7 +127,7 @@ ll Cache::getMisses(){
 }
 
 float Cache::getHitRate(){
-    return (100.0*hits)/(hits+misses);
+    return (float)(hits)/(hits+misses);
 }
 
 Cache::~Cache(){

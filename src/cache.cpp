@@ -104,7 +104,7 @@ ll Cache::getBlockPosition(ll address){
     ll index = getIndex(address);
     ll tag = getTag(address);
     ll iterator;
-    for(iterator=index*setAssociativity; iterator<index*(setAssociativity+1); iterator++){
+    for(iterator=index*setAssociativity; iterator<(index+1)*setAssociativity; iterator++){
         if(tag == cacheBlocks[iterator]){
             return iterator;
         }

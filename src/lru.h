@@ -11,5 +11,5 @@ class LRU : public Cache{
         long long getBlockToReplace(long long address) override;
         void update(long long blockToReplace, int status) override;
 
-        ~LRU() override;
+        ~LRU();
 };

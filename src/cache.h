@@ -21,6 +21,7 @@ class Cache{
 
     private:
         long long hits, misses;
+        long long* cacheBlocks;
 
     public:
         void incHits();
@@ -45,7 +46,6 @@ class Cache{
         long long numberOfSets;
         int offsetSize;
         int indexSize;
-        long long* cacheBlocks;
         virtual ~Cache() = 0;
 
 };

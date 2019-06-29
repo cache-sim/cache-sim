@@ -6,6 +6,7 @@
 #include <sstream>
 #include "cache.h" //contains all auxillary functions
 #include "plru.h"
+#include "lru.h"
 // #include "policy.h"
 
 using namespace std;
@@ -18,6 +19,10 @@ Cache* createCacheInstance(string& policy, ll cs, ll bs, ll sa){
     // check validity here and exit if invalid
     if(policy == "plru"){
         Cache* cache = new PLRU(cs, bs, sa);
+        return cache;
+    }
+    else if(policy == "lru"){
+        Cache* cache = new LRU(cs, bs, sa);
         return cache;
     }
     // else if(!strcmp(policy, <"policy">)){

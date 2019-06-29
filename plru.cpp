@@ -53,4 +53,6 @@
         }
     }
 
-    PLRU::~PLRU(){}
+    PLRU::~PLRU(){
+        free(tree);
+    }

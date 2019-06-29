@@ -130,4 +130,6 @@ float Cache::getHitRate(){
     return (100.0*hits)/(hits+misses);
 }
 
-Cache::~Cache(){}
+Cache::~Cache(){
+    free(cacheBlocks);
+}

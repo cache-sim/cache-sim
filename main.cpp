@@ -52,7 +52,7 @@ int main(int argc, char *argv[]){
 
     while(true){
         ll address = getNextAddress();
-        if(address == -1) break; //reached eof
+        if(address == 0) break; //reached eof
 
         for(int levelItr=0; levelItr<levels; levelItr++){
             ll block = cache[levelItr]->getBlockPosition(address);

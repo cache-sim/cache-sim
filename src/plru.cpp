@@ -44,10 +44,10 @@
         ll setNumber = block / setAssociativity;
         while(node>1){
             if(node%2){
-                tree[setNumber*(setAssociativity-1) + node/2] = false;
+                tree[setNumber*(setAssociativity-1) + node/2 - 1] = false;
             }
             else{
-                tree[setNumber*(setAssociativity-1) + node/2] = true;
+                tree[setNumber*(setAssociativity-1) + node/2 - 1] = true;
             }
             node /= 2;
         }

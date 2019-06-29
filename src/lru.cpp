@@ -20,8 +20,8 @@ ll LRU::getBlockToReplace(ll address){
      return min_block; 
 }
 
-void LRU::update(ll blockToReplace, int status){
-    lastUsed[blockToReplace] = time;
+void LRU::update(ll block, int status){
+    lastUsed[block] = time;
     time++;
 }
 

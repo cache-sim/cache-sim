@@ -35,7 +35,7 @@ Cache* createCacheInstance(string& policy, ll cs, ll bs, ll sa){
 int main(int argc, char *argv[]){
         
     ifstream params;
-    params.open("params.cfg");
+    params.open(argv[1]);
     string word;
     params >> word;
     int levels = stoi(word.c_str());
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]){
     vector<Cache*> cache(levels);
 
     int iterator = 0;
-    while(!params.eof()){
+    while(iterator < levels){
         string policy;
         params >> policy;
         ll cs, bs, sa; //cacheSize, blockSize, setAssociativity
@@ -71,13 +71,13 @@ int main(int argc, char *argv[]){
                 // insert will be implemented in cache.cpp
                 cache[levelItr]->update(blockToReplace, 0);
                 // update will be implemented in policy.cpp; will include updating the tree as in plru or updating the count as in lfu; 0 denotes miss
-                continue;
             }
             else{ //cache hit
                 cache[levelItr]->incHits();
                 // incHits will be implemented in cache.cpp
                 cache[levelItr]->update(block, 1);
                 // update will be implemented in policy.cpp; 1 denotes hit
+                break;
             }
         }
     }

@@ -39,15 +39,15 @@
         return index*setAssociativity + node - setAssociativity;
     }
 
-    void PLRU::update(ll blockToReplace, int status){
-        ll node = (blockToReplace % setAssociativity) + setAssociativity;
-        ll setNumber = blockToReplace / setAssociativity;
+    void PLRU::update(ll block, int status){
+        ll node = (block % setAssociativity) + setAssociativity;
+        ll setNumber = block / setAssociativity;
         while(node>1){
             if(node%2){
-                tree[setNumber*(setAssociativity-1) + node/2] = false;
+                tree[setNumber*(setAssociativity-1) + node/2 - 1] = false;
             }
             else{
-                tree[setNumber*(setAssociativity-1) + node/2] = true;
+                tree[setNumber*(setAssociativity-1) + node/2 - 1] = true;
             }
             node /= 2;
         }

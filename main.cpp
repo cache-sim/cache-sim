@@ -16,7 +16,7 @@ using namespace std::chrono;
 Cache* createCacheInstance(string& policy, ll cs, ll bs, ll sa){
     
     // check validity here and exit if invalid
-    if(!strcmp(policy.c_str(), "plru")){
+    if(policy == "plru"){
         Cache* cache = new PLRU(cs, bs, sa);
         return cache;
     }

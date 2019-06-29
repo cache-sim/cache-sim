@@ -38,7 +38,7 @@ class Cache{
         virtual void update(long long blockToReplace, int status) = 0;
 
     protected:
-        Cache(long long cacheSize, long long blockSize, long long setASsociativity);
+        Cache(long long cacheSize, long long blockSize, long long setAssociativity);
         long long cacheSize;
         long long blockSize;
         long long setAssociativity;

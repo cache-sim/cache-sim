@@ -1,25 +1,12 @@
-#include "cache.h"
-#include <chrono>
+#include "plru.h"
 
-using namespace std;
-using namespace std::chrono;
+#define ll long long
 
-typedef long long ll;
-
-int main(int argc, char *argv[])
-{
-
-    ll numberOfSets = atoll(argv[1]);
-    ll blockSize = atoll(argv[2]);
-    ll setAssociativity = atoll(argv[3]);
-
-    //initializing a cache with relevant parameters
-    Cache cache(numberOfSets, blockSize, setAssociativity);
 
     /*
     Tree with setAssociativity-1 nodes to keep track of least recently accessed element in cache.
     A tree which would look like
-       
+    
                     1
                   /   \
                  2     3
@@ -32,133 +19,40 @@ int main(int argc, char *argv[])
         
     for an 8-way setAssociativity
     */
-    bool *tree = (bool *)calloc(numberOfSets * (setAssociativity - 1), sizeof(bool));
-
-    //measure time
-    auto start = high_resolution_clock::now();
-
-    //iterate through all addresses accessed
-    while(true)
-    {
-
-        ll address = getNextAddress();
-        if(address == 0) break; //reached EOF
-
-        //check if address is present in cache
-        ll row = cache.isDataInCache(address); //returns row in the cache
-
-        if (row != -1)
-        { //cache hit
-
-            //update the number of hits
-            cache.incHits();
-
-            //update the values in the tree
-            int node = row % setAssociativity;      //the row in that set
-            ll setNumber = row / setAssociativity;  //the set number to choose the corresponding tree
-            node = node / 2 + setAssociativity / 2; //mapping the hit row to a leaf node in the tree
-            if (row % 2 == 0)
-            {
-                tree[setNumber * (setAssociativity - 1) + node - 1] = true; //left child was recently accessed
-            }
-            else
-            {
-                tree[setNumber * (setAssociativity - 1) + node - 1] = false; //right child was recently accessed
-            }
-
-            while (node > 0)
-            {
-                if (node % 2 == 0)
-                {
-                    tree[setNumber * (setAssociativity - 1) + node / 2 - 1] = true;
-                }
-                else
-                {
-                    tree[setNumber * (setAssociativity - 1) + node / 2 - 1] = false;
-                }
-                node /= 2;
-            }
+    PLRU::PLRU(ll cacheSize, ll blockSize, ll setAssociativity) : 
+        Cache(cacheSize, blockSize, setAssociativity){
+            tree = (bool *)calloc(numberOfSets * (setAssociativity - 1), sizeof(bool));
         }
-        else
-        { //cache miss
 
-            //update the number of misses
-            cache.incMisses();
-
-            int node;
-            ll setNumber;
-            if (!cache.isSetFull(cache.getIndexFromAddress(address)))
-            {
-
-                row = cache.insertData(address);
+    ll PLRU::getBlockToReplace(ll address){
+        
+        int node = 1;
+        ll index = getIndex(address);
+        while(node < setAssociativity){
+            if(tree[index*(setAssociativity-1) + node - 1]){
+                node = node*2 + 1;
             }
-            else
-            {
-
-                //finding the least recently used row in the set
-                node = 1;
-                setNumber = row / setAssociativity; //the set number to choose the corresponding tree
-                while (node < setAssociativity / 2)
-                {
-                    if (tree[setNumber * (setAssociativity - 1) + node - 1] == false)
-                    {
-                        node = node * 2;
-                    }
-                    else
-                    {
-                        node = node * 2 + 1;
-                    }
-                } //node can vary from setAssociativity/2 to setAssociativity-1
-
-                if (tree[setNumber * (setAssociativity - 1) + node - 1] == false)
-                {
-                    node = 2 * (node - setAssociativity / 2);
-                }
-                else
-                {
-                    node = 2 * (node - setAssociativity / 2) + 1;
-                } //node can vary from 0 to setAssociativity-1
-
-                //finding the row corresponding to calculated node in the cache
-                row = cache.getIndexFromAddress(address) * setAssociativity + node;
-
-                //replacing the row in the cache
-                cache.evictAndInsertCacheLine(row, address);
+            else{
+                node = node*2;
             }
+        } //node can vary from setAssociativity to 2*setAssociativity-1
+        return index*setAssociativity + node - setAssociativity;
+    }
 
-            //updating the tree
-            node = row % setAssociativity;          //the row in that set
-            setNumber = row / setAssociativity;     //the set number to choose the corresponding tree
-            node = node / 2 + setAssociativity / 2; //mapping the hit row to a leaf node in the tree
-            if (row % 2 == 0)
-            {
-                tree[setNumber * (setAssociativity - 1) + node - 1] = true; //left child was recently accessed
+    void PLRU::update(ll blockToReplace, int status){
+        ll node = (blockToReplace % setAssociativity) + setAssociativity;
+        ll setNumber = blockToReplace / setAssociativity;
+        while(node>1){
+            if(node%2){
+                tree[setNumber*(setAssociativity-1) + node/2] = false;
             }
-            else
-            {
-                tree[setNumber * (setAssociativity - 1) + node - 1] = false; //right child was recently accessed
+            else{
+                tree[setNumber*(setAssociativity-1) + node/2] = true;
             }
-            while (node > 0)
-            {
-                if (node % 2 == 0)
-                {
-                    tree[setNumber * (setAssociativity - 1) + node / 2 - 1] = true;
-                }
-                else
-                {
-                    tree[setNumber * (setAssociativity - 1) + node / 2 - 1] = false;
-                }
-                node /= 2;
-            }
+            node /= 2;
         }
     }
 
-    //measure time
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<milliseconds>(stop - start);
-
-    //printing the results
-    printResult(duration.count(), cache);
-
-    free(tree);
-}
+    PLRU::~PLRU(){
+        free(tree);
+    }

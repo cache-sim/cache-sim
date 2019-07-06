@@ -2,14 +2,14 @@
 
 #include "cache.h"
 
-class LRU : public Cache{
+class <POLICY> : public Cache{
     private:
-        long long time;
-        long long *lastUsed;
+        // declare policy specific data structures
+
     public:
-        LRU(long long cacheSize, long long blockSize, long long setAssociativity, int level);
+        <POLICY>(long long cacheSize, long long blockSize, long long setAssociativity);
         long long getBlockToReplace(long long address) override;
         void update(long long blockToReplace, int status) override;
 
-        ~LRU();
-};
+        ~<POLICY>();
+}

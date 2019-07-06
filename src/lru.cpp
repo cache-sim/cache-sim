@@ -2,8 +2,8 @@
 
 #define ll long long
 
-LRU::LRU(ll cacheSize, ll blockSize, ll setAssociativity) : 
-    Cache(cacheSize, blockSize, setAssociativity){
+LRU::LRU(ll cacheSize, ll blockSize, ll setAssociativity, int level) : 
+    Cache(cacheSize, blockSize, setAssociativity, level, "LRU "){
         lastUsed = (ll *)calloc(numberOfSets * (setAssociativity), sizeof(ll));
 }
 

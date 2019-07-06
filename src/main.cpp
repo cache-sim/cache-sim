@@ -1,9 +1,9 @@
 #include <stdlib.h>
-#include <string.h>
 #include <chrono>
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include "printUtils.hpp" //contains I/O functions
 #include "cache.h" //contains all auxillary functions
 #include "plru.h"
 #include "lru.h"
@@ -14,19 +14,19 @@ using namespace std::chrono;
 
 #define ll long long
 
-Cache* createCacheInstance(string& policy, ll cs, ll bs, ll sa){
+Cache* createCacheInstance(string& policy, ll cs, ll bs, ll sa, int level){
     
     // check validity here and exit if invalid
     if(policy == "plru"){
-        Cache* cache = new PLRU(cs, bs, sa);
+        Cache* cache = new PLRU(cs, bs, sa, level);
         return cache;
     }
     else if(policy == "lru"){
-        Cache* cache = new LRU(cs, bs, sa);
+        Cache* cache = new LRU(cs, bs, sa, level);
         return cache;
     }
     // else if(!strcmp(policy, <"policy">)){
-    //     Cache* cache = new <policy>(cs, bs, sa);
+    //     Cache* cache = new <policy>(cs, bs, sa, level);
     //     return cache;
     // }
      
@@ -50,7 +50,7 @@ int main(int argc, char *argv[]){
         params >> word; cs = stoll(word.c_str());
         params >> word; bs = stoll(word.c_str());
         params >> word; sa = stoll(word.c_str());
-        cache[iterator++] = createCacheInstance(policy, cs, bs, sa);
+        cache[iterator++] = createCacheInstance(policy, cs, bs, sa, iterator);
     }
 
     auto start = high_resolution_clock::now();
@@ -85,8 +85,9 @@ int main(int argc, char *argv[]){
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<seconds>(stop-start);
 
+    printTraceInfo();
     for(int levelItr=0; levelItr<levels; levelItr++){
-        printResult(cache[levelItr]);
+        printCacheStatus(cache[levelItr]);
         // will be implemented in cache.cpp
         delete cache[levelItr];
     }

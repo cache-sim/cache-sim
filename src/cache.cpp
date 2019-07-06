@@ -43,30 +43,29 @@ int log2(ll x) {
     return power;
 }
 
-// I/O
-
-ll getNextAddress(){
-    char instruction[20], accessType, address[20];
-    scanf("%s %c %s", instruction, &accessType, address);
-    if(strcpy(instruction, "#eof") == 0) //return address 0 if end of line
-        return 0;
-    if(accessType == 'R')
-        readCounter++;
-    else
-        writeCounter++;
-    return hexToDec(address);
+void incReads(){
+    readCounter++;
 }
 
-void printResult(Cache* cache){
-    printf("Total Number of data accesses: %lld\n", cache->getHits() + cache->getMisses());
-    printf("Hits: %lld\n", cache->getHits());
-    printf("Misses: %lld\n", cache->getMisses());
-    printf("Hit Ratio: %f\n", cache->getHitRate() * 100);
+void incWrites(){
+    writeCounter++;
+}
+
+ll getReads(){
+    return readCounter;
+}
+
+ll getWrites(){
+    return writeCounter;
+}
+
+std::string Cache::getPolicy(){
+    return policy;
 }
 
 // Cache class
 
-Cache::Cache(ll cacheSize, ll blockSize, ll setAssociativity){
+Cache::Cache(ll cacheSize, ll blockSize, ll setAssociativity, int level, std::string policy){
     
     if(!isValidConfig(cacheSize, blockSize, setAssociativity)){
         printf("Invalid Cache configuration\n");
@@ -75,6 +74,8 @@ Cache::Cache(ll cacheSize, ll blockSize, ll setAssociativity){
     this->cacheSize = cacheSize;
     this->blockSize = blockSize;
     this->setAssociativity = setAssociativity;
+    this->level = level;
+    this->policy = policy;
 
     cacheBlocks = (ll*)malloc(cacheSize/blockSize * sizeof(ll));
 
@@ -90,6 +91,10 @@ void Cache::incHits(){
 
 void Cache::incMisses(){
     misses++;
+}
+
+int Cache::getLevel(){
+    return level;
 }
 
 ll Cache::getTag(ll address){

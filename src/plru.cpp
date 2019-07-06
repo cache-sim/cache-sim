@@ -19,8 +19,8 @@
         
     for an 8-way setAssociativity
     */
-    PLRU::PLRU(ll cacheSize, ll blockSize, ll setAssociativity) : 
-        Cache(cacheSize, blockSize, setAssociativity){
+    PLRU::PLRU(ll cacheSize, ll blockSize, ll setAssociativity, int level) : 
+        Cache(cacheSize, blockSize, setAssociativity, level, "PLRU"){
             tree = (bool *)calloc(numberOfSets * (setAssociativity - 1), sizeof(bool));
         }
 

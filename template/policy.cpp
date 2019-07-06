@@ -2,8 +2,8 @@
 
 #define ll long long
 
-<POLICY>::<POLICY>(ll cacheSize, ll blockSize, ll setAssociativity) :
-    Cache(cacheSize, blockSize, setAssociativity){
+<POLICY>::<POLICY>(ll cacheSize, ll blockSize, ll setAssociativity, int level) :
+    Cache(cacheSize, blockSize, setAssociativity, level, "<POLICY>"){
         // initialize policy specific data structure 
     }
 

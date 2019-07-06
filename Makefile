@@ -1,6 +1,6 @@
 SRC_DIR := src
 POLICY_DIR := policies
-SRC_FILES := $(wildcard $(SRC_DIR)/*)
+SRC_FILES := $(wildcard $(SRC_DIR)/*pp)
 POLICY_FILES := ""
 G++FLAGS := ""
 

@@ -4,7 +4,6 @@ if [ $# -eq 0 ]; then
     echo "Usage:"
     echo "./run.sh -t|--trace <TRACE> -c|--config <CONFIG_FILE> [-i|--interactive] [-d|--debug]"
 else
-    touch parameters.cpp
     ARGS=""
     TRACE=""
     CONFIG=""
@@ -44,8 +43,7 @@ else
     else
         ARGS="$ARGS$(cat params.cfg | awk '/[a-z]/ {print "-D" $1}' | uniq)"
         FILES=$(cat params.cfg | awk '/[a-z]/ {print "policies/" $1 ".cpp"}' | uniq)
-        make -C ${BASEDIR} G++FLAGS=$ARGS POLICY_FILES=$FILES
+        make -C ${BASEDIR} G++FLAGS="$ARGS" POLICY_FILES="$FILES"
         gzip -dc $TRACE | ${BASEDIR}/cache.exe $CONFIG
     fi 
-    rm parameters.cpp
 fi

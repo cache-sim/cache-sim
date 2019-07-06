@@ -42,8 +42,10 @@ else
     elif [ $(file --mime-type -b $TRACE) != "application/gzip" ]; then
         echo "Please provide a trace in gzip format"
     else
-        make -C ${BASEDIR}
-        gzip -dc $TRACE | ${BASEDIR}/cache.exe $CONFIG $ARGS
-    fi
+        ARGS="$ARGS$(cat params.cfg | awk '/[a-z]/ {print "-D" $1}' | uniq)"
+        FILES=$(cat params.cfg | awk '/[a-z]/ {print "policies/" $1 ".cpp"}' | uniq)
+        make -C ${BASEDIR} G++FLAGS=$ARGS POLICY_FILES=$FILES
+        gzip -dc $TRACE | ${BASEDIR}/cache.exe $CONFIG
+    fi 
     rm parameters.cpp
 fi

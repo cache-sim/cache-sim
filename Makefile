@@ -1,6 +1,6 @@
 SRC_DIR := src
 SRC_FILES := $(wildcard $(SRC_DIR)/*)
-CPP_FILES := $(wildcard $(SRC_DIR)/*.cpp)
+CPP_FILES := $(wildcard $(SRC_DIR)/*.?pp)
 
 all: cache.exe
 

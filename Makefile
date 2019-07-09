@@ -6,7 +6,7 @@ G++FLAGS := ""
 
 all: cache.exe
 
-cache.exe: $(SRC_FILES) $(POLICY_FILES)
+cache.exe: $(SRC_FILES) $(POLICY_FILES) # TODO: need to recompile when G++FLAGS is changed
 	g++ $(SRC_FILES) $(POLICY_FILES) $(G++FLAGS) -o $@
 
 clean:

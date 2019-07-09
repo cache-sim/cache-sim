@@ -10,7 +10,7 @@ else
     while [[ $# -gt 0 ]]; do
         case $1 in
             -i|--interactive)
-                ARGS="$ARGS -DINTERACTIVE"
+                ARGS="$ARGS -DINTERACTIVE -lcurses "
                 shift
                 ;;
             -d|--debug)
@@ -29,7 +29,6 @@ else
                 ;;
             *)
                 echo "Unidentified option: $1"
-                rm parameters.cpp
                 exit 1
                 ;;
         esac
@@ -41,8 +40,9 @@ else
     elif [ $(file --mime-type -b $TRACE) != "application/gzip" ]; then
         echo "Please provide a trace in gzip format"
     else
-        ARGS="$ARGS$(cat params.cfg | awk '/[a-z]/ {print "-D" $1}' | uniq)"
-        FILES=$(cat params.cfg | awk '/[a-z]/ {print "policies/" $1 ".cpp"}' | uniq)
+        ARGS="$ARGS $(cat params.cfg | awk '/[a-z]/ {print "-D" $1}' | tr '\r\n' ' ' | uniq)"
+        FILES=$(cat params.cfg | awk '/[a-z]/ {print "policies/" $1 ".cpp"}' | tr '\r\n' ' ' | uniq)
+        echo $FILES
         make -C ${BASEDIR} G++FLAGS="$ARGS" POLICY_FILES="$FILES"
         gzip -dc $TRACE | ${BASEDIR}/cache.exe $CONFIG
     fi 

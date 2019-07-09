@@ -130,6 +130,9 @@ ll Cache::getMisses(){
 }
 
 float Cache::getHitRate(){
+    if(hits+misses == 0){
+        return 0;
+    }
     return (float)(hits)/(hits+misses);
 }
 

@@ -26,7 +26,7 @@ ll getNextAddress(){
     return hexToDec(address);
 }
 
-#if INTERACTIVE
+#ifdef INTERACTIVE
 void printTraceInfoOutline(){
     move(0, 0);
     printw("Total Number Of Instructions:"); refresh();
@@ -53,7 +53,7 @@ void printTraceInfo2(){
     printf("\n");
 }
 
-#if INTERACTIVE
+#ifdef INTERACTIVE
 void printCacheStatusOutline(Cache* cache){
     int verticalOffset = 5 + 3 * (cache->getLevel()-1);
     move(verticalOffset, levelOffset);

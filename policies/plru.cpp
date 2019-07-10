@@ -22,6 +22,10 @@
     PLRU::PLRU(ll cacheSize, ll blockSize, ll setAssociativity, int level) : 
         Cache(cacheSize, blockSize, setAssociativity, level, "PLRU"){
             tree = (bool *)calloc(numberOfSets * (setAssociativity - 1), sizeof(bool));
+            if(tree == NULL){
+                printf("Failed to allocate memory for data members of PLRU (L%d) cache\n", level);
+                exit(0);            
+            }
         }
 
     ll PLRU::getBlockToReplace(ll address){

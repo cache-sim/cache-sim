@@ -78,6 +78,10 @@ Cache::Cache(ll cacheSize, ll blockSize, ll setAssociativity, int level, std::st
     this->policy = policy;
 
     cacheBlocks = (ll*)malloc(cacheSize/blockSize * sizeof(ll));
+    if(cacheBlocks == NULL){
+        printf("Failed to allocate memory for L%d cache\n", this->level);
+        exit(0);
+    }
 
     numberOfSets = cacheSize/(blockSize*setAssociativity);
     offsetSize = log2(blockSize);

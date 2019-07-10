@@ -25,7 +25,7 @@ The trace for the simulator is expected to be a gzip file generated the [Pin](ht
 ## Usage  
 
 ```./run.sh -t|--trace <TRACE> -c|--config <CONFIG_FILE> [-i|--interactive] [-d|--debug]```  
-The ```-i``` option outputs the hits and misses in all the levels of the cache in live time (obviously making it slower but hopefully increases your patience).  
+The ```-i``` option outputs the hits and misses in all the levels of the cache in live time (obviously making it slower but hopefully increases your patience :).  
 The ```-d``` option checks if the the cacheBlock chosen by the policy indeed matches the index of the address being accessed, just a safety measure.  
 
 ## Contribution  

@@ -12,10 +12,18 @@ else
             -i|--interactive)
                 ARGS="$ARGS -DINTERACTIVE -lcurses "
                 shift
+                if [[ "$ARGS" =~ "-DDEBUG" ]]; then
+                    echo "-i and -d options are not supported together"
+                    exit 1
+                fi
                 ;;
             -d|--debug)
                 ARGS="$ARGS -DDEBUG"
                 shift
+                if [[ "$ARGS" =~ "-DINTERACTIVE" ]]; then
+                    echo "-i and -d options are not supported together"
+                    exit 1
+                fi
                 ;;
             -t|--trace)
                 TRACE="$2"

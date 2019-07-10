@@ -122,6 +122,11 @@ ll Cache::getBlockPosition(ll address){
 }
 
 void Cache::insert(ll address, ll blockToReplace){
+    #if DEBUG
+    if(getIndex(address) != blockToReplace/setAssociativity){
+        printf("ERROR: Invalid insertion: Address %x placed in block %lld", address, blockToReplace);
+    }
+    #endif
     cacheBlocks[blockToReplace] = getTag(address);
 }
 

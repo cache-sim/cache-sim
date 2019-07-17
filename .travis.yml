@@ -1,0 +1,16 @@
+language: cpp
+sudo: required
+compiler: gcc
+os: linux
+before install:
+- sudo apt-get install libncurses5-dev
+- touch test-config
+- |
+  for policy in policies/*.cpp; do
+    echo "$policy 32 32 1" >> test-config
+  done
+script:
+- ARGS=$(ls policies | grep .cpp | awk -F . '{print "-D" $1}' | tr '\r\n' ' ')
+- FILES=$(ls policies | grep .cpp | tr '\r\n' ' ')
+- make G++FLAGS="$ARGS" POLICY_FILES="$FILES"
+- gzip -dc sample.out.gz | ./cache.exe test-config

@@ -8,7 +8,7 @@ install:
 - cd policies
 - |
   for policy in *.cpp; do
-    policy = "echo $policy | cut -d'.' -f 1"
+    policy="echo $policy | cut -d'.' -f 1"
     echo "$policy 32 32 1" >> ../test-config
   done
 - cd ../

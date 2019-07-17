@@ -1,7 +1,7 @@
 dist: xenial
 language: cpp
 sudo: required
-compiler: gcc
+compiler: gcc -std=c++11
 os: linux
 install:
 - sudo apt-get install libncurses5-dev

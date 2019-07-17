@@ -1,8 +1,7 @@
 SRC_DIR := src
 POLICY_DIR := policies
 SRC_FILES := $(wildcard $(SRC_DIR)/*pp)
-POLICY_FILES := ""
-G++FLAGS := ""
+POLICY_FILES := $(wildcard $(POLICY_DIR)/*pp)
 
 all: cache.exe
 

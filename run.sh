@@ -4,19 +4,26 @@ if [ $# -eq 0 ]; then
     echo "Usage:"
     echo "./run.sh -t|--trace <TRACE> -c|--config <CONFIG_FILE> [-i|--interactive] [-d|--debug]"
 else
-    touch parameters.cpp
     ARGS=""
     TRACE=""
     CONFIG=""
     while [[ $# -gt 0 ]]; do
         case $1 in
             -i|--interactive)
-                ARGS="$ARGS -DINTERACTIVE"
+                ARGS="$ARGS -DINTERACTIVE -lcurses "
                 shift
+                if [[ "$ARGS" =~ "-DDEBUG" ]]; then
+                    echo "-i and -d options are not supported together"
+                    exit 1
+                fi
                 ;;
             -d|--debug)
                 ARGS="$ARGS -DDEBUG"
                 shift
+                if [[ "$ARGS" =~ "-DINTERACTIVE" ]]; then
+                    echo "-i and -d options are not supported together"
+                    exit 1
+                fi
                 ;;
             -t|--trace)
                 TRACE="$2"
@@ -30,7 +37,6 @@ else
                 ;;
             *)
                 echo "Unidentified option: $1"
-                rm parameters.cpp
                 exit 1
                 ;;
         esac
@@ -42,10 +48,10 @@ else
     elif [ $(file --mime-type -b $TRACE) != "application/gzip" ]; then
         echo "Please provide a trace in gzip format"
     else
-        ARGS="$ARGS$(cat params.cfg | awk '/[a-z]/ {print "-D" $1}' | uniq)"
-        FILES=$(cat params.cfg | awk '/[a-z]/ {print "policies/" $1 ".cpp"}' | uniq)
-        make -C ${BASEDIR} G++FLAGS=$ARGS POLICY_FILES=$FILES
+        ARGS="$ARGS $(cat $CONFIG | awk '/[a-z]/ {print "-D" $1}' | tr '\r\n' ' ' | uniq)"
+        FILES=$(cat $CONFIG | awk '/[a-z]/ {print "policies/" $1 ".cpp"}' | tr '\r\n' ' ' | uniq)
+        echo $FILES
+        make -C ${BASEDIR} G++FLAGS="$ARGS" POLICY_FILES="$FILES"
         gzip -dc $TRACE | ${BASEDIR}/cache.exe $CONFIG
     fi 
-    rm parameters.cpp
 fi

@@ -78,6 +78,10 @@ Cache::Cache(ll cacheSize, ll blockSize, ll setAssociativity, int level, std::st
     this->policy = policy;
 
     cacheBlocks = (ll*)malloc(cacheSize/blockSize * sizeof(ll));
+    if(cacheBlocks == NULL){
+        printf("Failed to allocate memory for L%d cache\n", this->level);
+        exit(0);
+    }
 
     numberOfSets = cacheSize/(blockSize*setAssociativity);
     offsetSize = log2(blockSize);
@@ -118,6 +122,11 @@ ll Cache::getBlockPosition(ll address){
 }
 
 void Cache::insert(ll address, ll blockToReplace){
+    #ifdef DEBUG
+    if(getIndex(address) != blockToReplace/setAssociativity){
+        printf("ERROR: Invalid insertion: Address %x placed in block %lld", address, blockToReplace);
+    }
+    #endif
     cacheBlocks[blockToReplace] = getTag(address);
 }
 
@@ -130,6 +139,9 @@ ll Cache::getMisses(){
 }
 
 float Cache::getHitRate(){
+    if(hits+misses == 0){
+        return 0;
+    }
     return (float)(hits)/(hits+misses);
 }
 

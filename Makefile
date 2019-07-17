@@ -1,11 +1,12 @@
 SRC_DIR := src
-SRC_FILES := $(wildcard $(SRC_DIR)/*)
-CPP_FILES := $(wildcard $(SRC_DIR)/*.cpp)
+POLICY_DIR := policies
+SRC_FILES := $(wildcard $(SRC_DIR)/*pp)
+POLICY_FILES := $(wildcard $(POLICY_DIR)/*pp)
 
 all: cache.exe
 
-cache.exe: $(SRC_FILES)
-	g++ $(CPP_FILES) -o $@
+cache.exe: $(SRC_FILES) $(POLICY_FILES) # TODO: need to recompile when G++FLAGS is changed
+	g++ -std=c++11 $(SRC_FILES) $(POLICY_FILES) $(G++FLAGS) -o $@
 
 clean:
 	rm cache.exe

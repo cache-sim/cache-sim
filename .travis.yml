@@ -1,0 +1,18 @@
+dist: xenial
+language: cpp
+sudo: required
+compiler: g++
+os: linux
+install:
+- touch test-config
+- cd policies
+- |
+  echo "$(ls | grep .cpp -c)" >> ../test-config
+  for policy in *.cpp; do
+    policy="$(echo $policy | cut -d'.' -f 1)"
+    echo "$policy 32 32 1" >> ../test-config
+  done
+- cd ../
+- cat test-config
+script:
+- ./run.sh -c test-config -t sample.out.gz

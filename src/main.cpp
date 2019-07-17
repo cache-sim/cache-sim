@@ -2,12 +2,12 @@
 #include <chrono>
 #include <fstream>
 #include <vector>
-#include <sstream>
-#include "printUtils.hpp" //contains I/O functions
+#include <unistd.h>
+#include "ioUtils.hpp" //contains I/O functions
 #include "cache.h" //contains all auxillary functions
-#include "plru.h"
-#include "lru.h"
-// #include "policy.h"
+#include "../policies/plru.h"
+#include "../policies/lru.h"
+// #include "../policies/policy.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -53,6 +53,16 @@ int main(int argc, char *argv[]){
         cache[iterator++] = createCacheInstance(policy, cs, bs, sa, iterator);
     }
 
+    #if INTERACTIVE
+    initscr();
+    raw();
+    noecho();   
+    printTraceInfoOutline();
+    for(int levelItr=0; levelItr<levels; levelItr++){
+        printCacheStatusOutline(cache[levelItr]);
+    }
+    #endif
+
     auto start = high_resolution_clock::now();
 
     while(true){
@@ -71,12 +81,20 @@ int main(int argc, char *argv[]){
                 // insert will be implemented in cache.cpp
                 cache[levelItr]->update(blockToReplace, 0);
                 // update will be implemented in policy.cpp; will include updating the tree as in plru or updating the count as in lfu; 0 denotes miss
+                #if INTERACTIVE
+                printTraceInfo();
+                printCacheStatus(cache[levelItr]);
+                #endif
             }
             else{ //cache hit
                 cache[levelItr]->incHits();
                 // incHits will be implemented in cache.cpp
                 cache[levelItr]->update(block, 1);
                 // update will be implemented in policy.cpp; 1 denotes hit
+                #if INTERACTIVE
+                printTraceInfo();
+                printCacheStatus(cache[levelItr]);
+                #endif
                 break;
             }
         }
@@ -85,9 +103,14 @@ int main(int argc, char *argv[]){
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<seconds>(stop-start);
 
-    printTraceInfo();
+    #if INTERACTIVE
+    usleep(2000000);  
+    endwin();
+    #endif
+
+    printTraceInfo2();
     for(int levelItr=0; levelItr<levels; levelItr++){
-        printCacheStatus(cache[levelItr]);
+        printCacheStatus2(cache[levelItr]);
         // will be implemented in cache.cpp
         delete cache[levelItr];
     }

@@ -18,9 +18,6 @@ void incWrites();
 long long getReads();
 long long getWrites();
 
-// I/O
-long long getNextAddress();
-// void printResult(Cache* cache);
 
 // cache class
 class Cache{

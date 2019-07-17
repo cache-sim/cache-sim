@@ -4,7 +4,6 @@ sudo: required
 compiler: g++
 os: linux
 install:
-- sudo apt-get install libncurses5-dev
 - touch test-config
 - cd policies
 - |
@@ -16,4 +15,4 @@ install:
 - cd ../
 - cat test-config
 script:
-- ./run.sh -c test-config -t sample.out.gz -i
+- ./run.sh -c test-config -t sample.out.gz

@@ -18,22 +18,16 @@ Cache* createCacheInstance(string& policy, ll cs, ll bs, ll sa, int level){
     
     // check validity here and exit if invalid
     if(policy == "plru"){
-        #if plru
         Cache* cache = new PLRU(cs, bs, sa, level);
         return cache;
-        #endif
     }
     else if(policy == "lru"){
-        #if lru
         Cache* cache = new LRU(cs, bs, sa, level);
         return cache;
-        #endif
     }
     // else if(!strcmp(policy, <"policy">)){
-    //     #if policy
     //     Cache* cache = new <policy>(cs, bs, sa, level);
     //     return cache;
-    //     #endif
     // }
      
 }

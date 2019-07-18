@@ -1,33 +1,33 @@
-# cache-sim
+# cache-sim  
 
-One level cache simulator.
+*A multi-level cache simulator built using C++.*  
 
-## How to run:
-Navigate to the cloned directory and run ```./cache.py```
+## Installation  
 
-## Work to be done:
+No installations needed here, unless you don't have the ncurses library, in which case just run  
+```sudo apt-get install libncurses5-dev```
 
-- [x] Implementing Cache.h header file. 
-- [x] Testing Cache.h header file.
-- [x] Implementing cache replacement algorithms.
-- [x] Testing cache replacement algorithms.
-- [x] Python/Shell script to run the simulator.
-- [x] Implementing and testing the matrix multiplication programs.
-- [x] Analysis of first 4 points (Phase I - Easy)
-- [ ] Analysis of last 2 points (Phase II - Hard)
+## Input Format  
 
-## Note: 
+The configuration for the cache you want to simulate has to be given in the form of a text file. A sample format can be found in ```paras.cfg```  
 
-```src``` folder contains the C++ code for the simulators. ```exe``` folder will contain the executables generated while running the program.
+The input format is as so:  
+```
+<levels>  
+<policy> <cacheSize> <blockSize> <setAssociativity>
+.  
+.  
+.  
+```  
 
-```cache.h``` contains definition of CacheLine and Cache class.```cache.cpp``` file will contain the implementation of classes in ```cache.h```.
+The trace for the simulator is expected to be a gzip file generated the [Pin](https://software.intel.com/en-us/articles/pin-a-binary-instrumentation-tool-downloads) tool from Intel.  
 
-Traces for the 3 programs in ```/matrix``` can be found [here](https://drive.google.com/open?id=1JsXtNrd9Myawke7c2M9BEU8nSjW3ATSR)
+## Usage  
 
-## Contributors:
-- Shanthanu S Rai
-- Rohit M P
-- Shashwath
-- Nishanth
-- Varun Pattar
-- Narayan
+```./run.sh -t|--trace <TRACE> -c|--config <CONFIG_FILE> [-i|--interactive] [-d|--debug]```  
+The ```-i``` option outputs the hits and misses in all the levels of the cache in live time (obviously making it slower but hopefully increases your patience :).  
+The ```-d``` option checks if the the cacheBlock chosen by the policy indeed matches the index of the address being accessed, just a safety measure.  
+
+## Contribution  
+
+To add support for more eviction policies, have a look at the template folder and declare the required data structures and complete the functions (don't forget to put them in the policies folder). If the template seems to be lacking something, raise an issue and we can have a look at it.  

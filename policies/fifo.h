@@ -1,13 +1,10 @@
 #pragma once
 
 #include "../src/cache.h"
-#include <queue>
-#include <vector>
 
 class FIFO : public Cache{
     private:
-        std::vector<std::queue<long long>> queueOfBlocks;
-        long long *nextEmptyBlockInSet;
+        long long *fifoBlockInSet; // each element varies from [0, setAssociativity-1]
 
     public:
         FIFO(long long cacheSize, long long blockSize, long long setAssociativity, int level);

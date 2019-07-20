@@ -7,7 +7,7 @@
 class FIFO : public Cache{
     private:
         std::vector<std::queue<long long>> queueOfBlocks;
-        bool *isBlockEmpty;
+        long long *nextEmptyBlockInSet;
 
     public:
         FIFO(long long cacheSize, long long blockSize, long long setAssociativity, int level);

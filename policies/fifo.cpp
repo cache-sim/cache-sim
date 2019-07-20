@@ -5,21 +5,17 @@
 
 FIFO::FIFO(ll cacheSize, ll blockSize, ll setAssociativity, int level) :
     Cache(cacheSize, blockSize, setAssociativity, level, "FIFO"), queueOfBlocks(numberOfSets){
-    isBlockEmpty = new bool(numberOfSets * setAssociativity);
-    std::fill(isBlockEmpty, isBlockEmpty+(numberOfSets*setAssociativity)*sizeof(bool), true);
+    nextEmptyBlockInSet = new ll(numberOfSets);
+    for(ll set = 0; set < numberOfSets; set++) {
+        nextEmptyBlockInSet[set] = set*setAssociativity;
+    }
 }
 
 ll FIFO::getBlockToReplace(ll address){
     ll index = getIndex(address);
     ll blockToReplace;
     if(queueOfBlocks[index].size() < setAssociativity) { // If set is not full
-        for(ll block = index*setAssociativity; block < (index+1)*setAssociativity; block++) {
-            if(isBlockEmpty[block]) {
-                isBlockEmpty[block] = false;
-                blockToReplace = block;
-                break;
-            }
-        }
+        blockToReplace = nextEmptyBlockInSet[index]++;
     }
     else {
         blockToReplace = queueOfBlocks[index].front(); // get First In block

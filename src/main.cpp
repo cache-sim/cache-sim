@@ -8,6 +8,7 @@
 #include "../policies/plru.h"
 #include "../policies/lru.h"
 #include "../policies/srrip.h"
+#include "../policies/fifo.h"
 // #include "../policies/policy.h"
 
 using namespace std;
@@ -28,6 +29,10 @@ Cache* createCacheInstance(string& policy, ll cs, ll bs, ll sa, int level){
     }
     else if(policy == "srrip"){
         Cache* cache = new SRRIP(cs, bs, sa, level);
+        return cache;
+    }
+    else if(policy == "fifo"){
+        Cache* cache = new FIFO(cs, bs, sa, level);
         return cache;
     }
     // else if(!strcmp(policy, <"policy">)){

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "cache.h"
+#include "../src/cache.h"
 
 class <POLICY> : public Cache{
     private:

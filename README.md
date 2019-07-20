@@ -1,5 +1,8 @@
 # cache-sim  
 
+![GitHub release](https://img.shields.io/github/release/shanthanu9/cache-sim.svg?style=for-the-badge)
+![Travis (.org)](https://img.shields.io/travis/shanthanu9/cache-sim.svg?style=for-the-badge)
+
 *A multi-level cache simulator built using C++.*  
 
 ## Installation  

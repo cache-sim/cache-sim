@@ -21,5 +21,5 @@ void FIFO::update(ll block, int status){
 }
 
 FIFO::~FIFO(){
-    
+    free(fifoBlockInSet);
 }

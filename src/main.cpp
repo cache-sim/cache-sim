@@ -8,6 +8,7 @@
 #include "../policies/plru.h"
 #include "../policies/lru.h"
 #include "../policies/srrip.h"
+#include "../policies/lfu.h"
 #include "../policies/fifo.h"
 // #include "../policies/policy.h"
 
@@ -31,15 +32,18 @@ Cache* createCacheInstance(string& policy, ll cs, ll bs, ll sa, int level){
         Cache* cache = new SRRIP(cs, bs, sa, level);
         return cache;
     }
+    else if(policy == "lfu"){
+        Cache* cache = new LFU(cs, bs, sa, level);
+        return cache;
+    }
     else if(policy == "fifo"){
         Cache* cache = new FIFO(cs, bs, sa, level);
         return cache;
     }
-    // else if(!strcmp(policy, <"policy">)){
-    //     Cache* cache = new <policy>(cs, bs, sa, level);
+    // else if(policy == "<policy>"){
+    //     Cache* cache = new <POLICY>(cs, bs, sa, level);
     //     return cache;
     // }
-     
 }
 
 int main(int argc, char *argv[]){

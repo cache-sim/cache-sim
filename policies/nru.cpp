@@ -18,8 +18,10 @@ ll NRU::getBlockToReplace(ll address){
 }
 
 void NRU::update(ll block, int status){
-    recentlyUsed[block] = true;
-    allUsed[block/setAssociativity]++;
+    if(recentlyUsed[block] != true){
+        recentlyUsed[block] = true;
+        allUsed[block/setAssociativity]++;
+    }
     
     if(allUsed[blockSize/setAssociativity] == setAssociativity){
         int startingBlock = (block/setAssociativity) * setAssociativity;

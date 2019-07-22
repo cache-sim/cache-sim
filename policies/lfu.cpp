@@ -5,8 +5,8 @@
 LFU::LFU(ll cacheSize, ll blockSize, ll setAssociativity, int level) :
     Cache(cacheSize, blockSize, setAssociativity, level, "LFU"){
         timesUsed = (ll *)calloc(numberOfSets * (setAssociativity), sizeof(ll));
-        if(lastUsed == NULL){
-            printf("Failed to allocate memory for data members of LRU (L%d) cache\n", level);
+        if(timesUsed == NULL){
+            printf("Failed to allocate memory for data members of LFU (L%d) cache\n", level);
             exit(0);
         }
     }
@@ -25,7 +25,12 @@ ll LFU::getBlockToReplace(ll address){
 }
 
 void LFU::update(ll block, int status){
-    timesUsed[block]++;
+    if(status == 1){
+        timesUsed[block]++;
+    }
+    else{
+        timesUsed[block] = 0;
+    }
 }
 
 LFU::~LFU(){

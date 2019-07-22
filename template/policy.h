@@ -12,4 +12,4 @@ class <POLICY> : public Cache{
         void update(long long blockToReplace, int status) override;
 
         ~<POLICY>();
-}
+};

@@ -5,7 +5,7 @@
 NRU::NRU(ll cacheSize, ll blockSize, ll setAssociativity, int level) :
     Cache(cacheSize, blockSize, setAssociativity, level, "NRU"){
         recentlyUsed = (bool*) calloc(setAssociativity * numberOfSets, sizeof(bool));
-        allUsed = (ll*) calloc(numberOfSets, sizeof(ll));
+        nRecentlyUsed = (ll*) calloc(numberOfSets, sizeof(ll));
     }
 
 ll NRU::getBlockToReplace(ll address){
@@ -20,20 +20,21 @@ ll NRU::getBlockToReplace(ll address){
 void NRU::update(ll block, int status){
     if(recentlyUsed[block] != true){
         recentlyUsed[block] = true;
-        allUsed[block/setAssociativity]++;
-    }
-    
-    if(allUsed[blockSize/setAssociativity] == setAssociativity){
-        int startingBlock = (block/setAssociativity) * setAssociativity;
-        for(int tempBlock = startingBlock; tempBlock < startingBlock + setAssociativity; tempBlock++){
-            if(tempBlock != block){
-                recentlyUsed[tempBlock] = false;
+        nRecentlyUsed[block/setAssociativity]++;
+        
+        if(nRecentlyUsed[block/setAssociativity] == setAssociativity){
+            int startingBlock = (block/setAssociativity) * setAssociativity;
+            for(int tempBlock = startingBlock; tempBlock < startingBlock + setAssociativity; tempBlock++){
+                if(tempBlock != block){
+                    recentlyUsed[tempBlock] = false;
+                }
             }
+            nRecentlyUsed[block/setAssociativity] = 1;
         }
     }
 }
 
 NRU::~NRU(){
     free(recentlyUsed);
-    free(allUsed);
+    free(nRecentlyUsed);
 }

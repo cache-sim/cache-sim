@@ -5,13 +5,7 @@
 #include <unistd.h>
 #include "ioUtils.hpp" //contains I/O functions
 #include "cache.h" //contains all auxillary functions
-#include "../policies/plru.h"
-#include "../policies/lru.h"
-#include "../policies/srrip.h"
-#include "../policies/nru.h"
-#include "../policies/lfu.h"
-#include "../policies/fifo.h"
-// #include "../policies/policy.h"
+#include "policyHeaders.h" //will be generate in run.sh
 
 using namespace std;
 using namespace std::chrono;

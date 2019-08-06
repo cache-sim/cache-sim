@@ -48,6 +48,11 @@ else
     elif [ $(file --mime-type -b $TRACE) != "application/gzip" ]; then
         echo "Please provide a trace in gzip format"
     else
+        HEADER_FILE="src/policyHeaders.h"
+        > $HEADER_FILE
+        for header in policies/*.h; do
+            echo "#include \"../$header\"" >> $HEADER_FILE
+        done
         make -C ${BASEDIR} G++FLAGS="$ARGS"
         gzip -dc $TRACE | ${BASEDIR}/cache.exe $CONFIG
     fi 

@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include "ioUtils.hpp" //contains I/O functions
 #include "cache.h" //contains all auxillary functions
-#include "policyHeaders.h" //will be generate in run.sh
+#include "policyHeaders.h" //will be generated in run.sh
 
 using namespace std;
 using namespace std::chrono;
